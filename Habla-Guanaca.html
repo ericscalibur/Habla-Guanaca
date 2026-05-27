@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#020617" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Habla Guanaca" />
+  <title>Habla Guanaca</title>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%230047AB'/%3E%3Ctext x='50%25' y='54%25' font-size='110' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%AB%93%3C/text%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.2.0",
+      "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?deps=react@18.2.0",
+      "lucide-react": "https://esm.sh/lucide-react@0.383.0?deps=react@18.2.0"
+    }
+  }
+  </script>
+  <style>
+    html, body { margin: 0; background: #020617; -webkit-text-size-adjust: 100%; }
+    #loading { color:#64748b; font-family: system-ui, sans-serif; text-align:center; padding-top:40vh; }
+  </style>
+</head>
+<body>
+  <div id="root"><div id="loading">Loading Habla Guanaca…</div></div>
+  <script type="text/babel" data-type="module" data-presets="react">
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { createRoot } from "react-dom/client";
+import {
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  RotateCcw,
+  Settings,
+  X,
+  ChevronRight,
+  Check,
+  Gauge,
+  Clock,
+  Eye,
+  EyeOff,
+  Sparkles,
+  MessageCircle,
+  Home,
+  Repeat,
+} from "lucide-react";
+
+/* =========================================================================
+   Habla Guanaca — Pimsleur-style Salvadoran Spanish trainer
+   Single-file React artifact. No backend, no localStorage. Audio via
+   the browser Web Speech API (window.speechSynthesis).
+   ========================================================================= */
+
+const SV_BLUE = "#0047AB"; // Salvadoran flag blue (accent)
+const SV_BLUE_SOFT = "#3D7BD9";
+
+/* -------------------------------------------------------------------------
+   1. LESSON CONTENT  (L01–L05)
+   Each item: { id, promptEn, targetEs, standardEs?, pron?, note? }
+   "type" (new | review) is assigned by the GIR scheduler at runtime.
+   ------------------------------------------------------------------------- */
+
+const LESSONS = [
+  {
+    id: "L01",
+    title: "Mucho gusto",
+    subtitle: "Meeting people",
+    description:
+      "Greetings, introductions, and the Salvadoran vos. Learn to say hello, ask how someone is, and give your name.",
+    estimatedMinutes: 16,
+    accentWord: "¡Buenas!",
+    items: [
+      { id: "L01-01", promptEn: "Hello / Hi", targetEs: "Hola", pron: "OH-la", note: "Same as standard Spanish — a universal opener." },
+      { id: "L01-02", promptEn: "Good morning", targetEs: "Buenos días", pron: "BWEH-nos DEE-as" },
+      { id: "L01-03", promptEn: "A casual “hey / what's up!”", targetEs: "¡Qué ondas!", standardEs: "¿Qué tal?", pron: "keh OHN-das", note: "Classic caliche greeting between friends." },
+      { id: "L01-04", promptEn: "How are you? (informal)", targetEs: "¿Cómo estás vos?", standardEs: "¿Cómo estás tú?", pron: "KOH-mo es-TAHS vohs", note: "Salvadorans use vos, not tú, for informal “you.”" },
+      { id: "L01-05", promptEn: "I'm fine / I'm good", targetEs: "Estoy bien", pron: "es-TOY bee-EN" },
+      { id: "L01-06", promptEn: "And you? (informal)", targetEs: "¿Y vos?", standardEs: "¿Y tú?", pron: "ee vohs" },
+      { id: "L01-07", promptEn: "My name is...", targetEs: "Me llamo...", pron: "meh YAH-mo" },
+      { id: "L01-08", promptEn: "Nice to meet you", targetEs: "Mucho gusto", pron: "MOO-cho GOOS-to" },
+      { id: "L01-09", promptEn: "You are very kind (informal)", targetEs: "Sos muy amable", standardEs: "Eres muy amable", pron: "sohs mooy ah-MAH-bleh", note: "“Vos sos” replaces “tú eres.”" },
+      { id: "L01-10", promptEn: "See you later", targetEs: "Nos vemos", pron: "nohs VEH-mos", note: "More common than “adiós” day to day." },
+    ],
+    dialogue: {
+      context: "Two neighbors crossing paths on the street in San Salvador.",
+      lines: [
+        { speaker: "A", textEs: "¡Qué ondas, maje! ¿Cómo estás vos?", textEn: "Hey dude! How are you?" },
+        { speaker: "B", textEs: "Bien, bien. ¿Y vos?", textEn: "Good, good. And you?" },
+        { speaker: "A", textEs: "Todo bien. Mucho gusto, me llamo Carlos.", textEn: "All good. Nice to meet you, my name is Carlos." },
+        { speaker: "B", textEs: "Igualmente. Nos vemos, pues.", textEn: "Likewise. See you, then." },
+      ],
+    },
+  },
+  {
+    id: "L02",
+    title: "¿De dónde sos vos?",
+    subtitle: "Where are you from?",
+    description:
+      "Origins and the verb ser in the vos form. Talk about where you're from and ask others.",
+    estimatedMinutes: 15,
+    accentWord: "Soy de aquí",
+    items: [
+      { id: "L02-01", promptEn: "Where are you from? (informal)", targetEs: "¿De dónde sos vos?", standardEs: "¿De dónde eres tú?", pron: "deh DOHN-deh sohs vohs", note: "“Vos sos” is the everyday Salvadoran “you are.”" },
+      { id: "L02-02", promptEn: "I am from El Salvador", targetEs: "Soy de El Salvador", pron: "soy deh el sal-va-DOR" },
+      { id: "L02-03", promptEn: "I am from the United States", targetEs: "Soy de Estados Unidos", pron: "soy deh es-TA-dos oo-NEE-dos", note: "Many Salvadorans have family in the U.S. (the diaspora)." },
+      { id: "L02-04", promptEn: "Are you Salvadoran? (informal)", targetEs: "¿Sos salvadoreño?", standardEs: "¿Eres salvadoreño?", pron: "sohs sal-va-do-REH-nyo" },
+      { id: "L02-05", promptEn: "A Salvadoran (colloquial, for ourselves)", targetEs: "Guanaco / Guanaca", pron: "gwa-NA-ko", note: "What Salvadorans affectionately call themselves." },
+      { id: "L02-06", promptEn: "I live here", targetEs: "Vivo aquí", pron: "VEE-vo ah-KEE" },
+      { id: "L02-07", promptEn: "Where do you live? (informal)", targetEs: "¿Dónde vivís vos?", standardEs: "¿Dónde vives tú?", pron: "DOHN-deh vee-VEES vohs", note: "-ir verbs take -ís in the vos form: vivís." },
+      { id: "L02-08", promptEn: "I don't speak much Spanish", targetEs: "No hablo mucho español", pron: "noh AH-blo MOO-cho es-pa-NYOL" },
+      { id: "L02-09", promptEn: "Do you speak English? (informal)", targetEs: "¿Hablás inglés vos?", standardEs: "¿Hablas inglés tú?", pron: "ah-BLAHS een-GLES vohs", note: "-ar verbs take -ás in the vos form: hablás." },
+      { id: "L02-10", promptEn: "A little", targetEs: "Un poquito", pron: "oon po-KEE-to", note: "“Poquito” (little bit) softens the answer — very Salvadoran." },
+    ],
+    dialogue: {
+      context: "Striking up conversation with a vendor at the market.",
+      lines: [
+        { speaker: "A", textEs: "¿De dónde sos vos? No sos de aquí, ¿verdad?", textEn: "Where are you from? You're not from here, right?" },
+        { speaker: "B", textEs: "Soy de Estados Unidos, pero mi familia es guanaca.", textEn: "I'm from the U.S., but my family is Salvadoran." },
+        { speaker: "A", textEs: "¡Chivo! ¿Y hablás español?", textEn: "Cool! And do you speak Spanish?" },
+        { speaker: "B", textEs: "Un poquito, fijate.", textEn: "A little bit, you know." },
+      ],
+    },
+  },
+  {
+    id: "L03",
+    title: "Quiero pupusas",
+    subtitle: "Ordering food",
+    description:
+      "Order at a pupusería: querer, numbers, and asking how much things cost. The most useful lesson in El Salvador.",
+    estimatedMinutes: 17,
+    accentWord: "¡Dos revueltas!",
+    items: [
+      { id: "L03-01", promptEn: "I want... / I'd like...", targetEs: "Quiero...", pron: "kee-EH-ro" },
+      { id: "L03-02", promptEn: "I'd like pupusas", targetEs: "Quiero pupusas", pron: "kee-EH-ro poo-POO-sas", note: "The national dish: a thick stuffed tortilla." },
+      { id: "L03-03", promptEn: "A “revuelta” pupusa (pork, beans & cheese)", targetEs: "Una revuelta", pron: "OO-na reh-VWEL-ta", note: "The most popular filling — “mixed.”" },
+      { id: "L03-04", promptEn: "With cheese and loroco", targetEs: "Con queso y loroco", pron: "kohn KEH-so ee lo-RO-ko", note: "Loroco is an edible flower bud — a Salvadoran favorite." },
+      { id: "L03-05", promptEn: "How much does it cost?", targetEs: "¿Cuánto cuesta?", pron: "KWAN-to KWES-ta" },
+      { id: "L03-06", promptEn: "Two (2)", targetEs: "Dos", pron: "dohs" },
+      { id: "L03-07", promptEn: "Three (3)", targetEs: "Tres", pron: "trehs" },
+      { id: "L03-08", promptEn: "A dollar", targetEs: "Un dólar", pron: "oon DOH-lar", note: "El Salvador uses the U.S. dollar (since 2001)." },
+      { id: "L03-09", promptEn: "The pickled cabbage topping", targetEs: "El curtido", pron: "el koor-TEE-do", note: "Tangy slaw served on top of pupusas." },
+      { id: "L03-10", promptEn: "That's all, thank you", targetEs: "Es todo, gracias", pron: "es TOH-do GRA-see-as" },
+    ],
+    dialogue: {
+      context: "At a busy pupusería window in the evening.",
+      lines: [
+        { speaker: "A", textEs: "Buenas, ¿qué va a querer?", textEn: "Hi, what would you like?" },
+        { speaker: "B", textEs: "Quiero dos revueltas y una con queso y loroco.", textEn: "I'd like two revueltas and one with cheese and loroco." },
+        { speaker: "A", textEs: "¿Con curtido?", textEn: "With curtido?" },
+        { speaker: "B", textEs: "Sí, por favor. ¿Cuánto cuesta?", textEn: "Yes, please. How much is it?" },
+        { speaker: "A", textEs: "Tres dólares, va pues.", textEn: "Three dollars, alright." },
+      ],
+    },
+  },
+  {
+    id: "L04",
+    title: "¿Dónde queda...?",
+    subtitle: "Getting around",
+    description:
+      "Directions and the verbs estar and ir in the vos form. Find your way around town and the bus system.",
+    estimatedMinutes: 16,
+    accentWord: "Por allá",
+    items: [
+      { id: "L04-01", promptEn: "Where is...? (located)", targetEs: "¿Dónde queda...?", pron: "DOHN-deh KEH-da", note: "“Quedar” is used for fixed locations." },
+      { id: "L04-02", promptEn: "The bus", targetEs: "El bus", pron: "el boos", note: "Salvadorans say “el bus,” not “el autobús.”" },
+      { id: "L04-03", promptEn: "Where are you going? (informal)", targetEs: "¿Para dónde vas vos?", standardEs: "¿Adónde vas tú?", pron: "PA-ra DOHN-deh vahs vohs" },
+      { id: "L04-04", promptEn: "I'm going downtown", targetEs: "Voy al centro", pron: "voy al SEN-tro" },
+      { id: "L04-05", promptEn: "To the right", targetEs: "A la derecha", pron: "a la deh-REH-cha" },
+      { id: "L04-06", promptEn: "To the left", targetEs: "A la izquierda", pron: "a la ees-kee-ER-da" },
+      { id: "L04-07", promptEn: "Straight ahead", targetEs: "Todo derecho", pron: "TOH-do deh-REH-cho" },
+      { id: "L04-08", promptEn: "It's over there", targetEs: "Queda por allá", pron: "KEH-da por a-YAH" },
+      { id: "L04-09", promptEn: "Is it far? (informal, asking 'are you...')", targetEs: "¿Está lejos?", pron: "es-TA LEH-hos" },
+      { id: "L04-10", promptEn: "It's close / nearby", targetEs: "Está cerca", pron: "es-TA SER-ka" },
+    ],
+    dialogue: {
+      context: "Asking a passerby for directions to the bus.",
+      lines: [
+        { speaker: "A", textEs: "Disculpe, ¿dónde queda el bus para el centro?", textEn: "Excuse me, where's the bus to downtown?" },
+        { speaker: "B", textEs: "Todo derecho y a la derecha. Queda cerca.", textEn: "Straight ahead and to the right. It's close." },
+        { speaker: "A", textEs: "¿Está lejos la parada?", textEn: "Is the stop far?" },
+        { speaker: "B", textEs: "No, por allá nomás. Va pues.", textEn: "No, just over there. Alright then." },
+      ],
+    },
+  },
+  {
+    id: "L05",
+    title: "La familia",
+    subtitle: "Family & relationships",
+    description:
+      "Family terms, possessives, and tener in the vos form. Talk about your family the Salvadoran way.",
+    estimatedMinutes: 16,
+    accentWord: "Mi gente",
+    items: [
+      { id: "L05-01", promptEn: "The family", targetEs: "La familia", pron: "la fa-MEE-lia" },
+      { id: "L05-02", promptEn: "Do you have...? (informal)", targetEs: "¿Tenés...?", standardEs: "¿Tienes...?", pron: "teh-NES", note: "“Vos tenés” replaces “tú tienes.”" },
+      { id: "L05-03", promptEn: "I have two kids", targetEs: "Tengo dos cipotes", standardEs: "Tengo dos niños", pron: "TEN-go dohs see-PO-tes", note: "“Cipote/cipota” = kid, very Salvadoran." },
+      { id: "L05-04", promptEn: "My mom", targetEs: "Mi mamá", pron: "mee ma-MA" },
+      { id: "L05-05", promptEn: "My dad", targetEs: "Mi papá", pron: "mee pa-PA" },
+      { id: "L05-06", promptEn: "My brother / sibling", targetEs: "Mi hermano", pron: "mee er-MA-no" },
+      { id: "L05-07", promptEn: "Your family (informal)", targetEs: "Tu familia", pron: "too fa-MEE-lia", note: "Possessive “tu” is the same even though you say “vos.”" },
+      { id: "L05-08", promptEn: "How nice! / How great!", targetEs: "¡Qué chivo!", standardEs: "¡Qué genial!", pron: "keh CHEE-vo", note: "“Chivo” = cool/awesome, peak caliche." },
+      { id: "L05-09", promptEn: "I love you (to family)", targetEs: "Te quiero", pron: "teh kee-EH-ro" },
+      { id: "L05-10", promptEn: "We are a big family", targetEs: "Somos una familia grande", pron: "SO-mos OO-na fa-MEE-lia GRAN-deh" },
+    ],
+    dialogue: {
+      context: "Catching up with a friend about family.",
+      lines: [
+        { speaker: "A", textEs: "¿Tenés cipotes vos?", textEn: "Do you have kids?" },
+        { speaker: "B", textEs: "Sí, tengo dos. Y vivo con mi mamá también.", textEn: "Yes, I have two. And I live with my mom too." },
+        { speaker: "A", textEs: "¡Qué chivo! Somos una familia grande también.", textEn: "How great! We're a big family too." },
+        { speaker: "B", textEs: "Va pues, así es mejor.", textEn: "Yeah, it's better that way." },
+      ],
+    },
+  },
+];
+
+/* -------------------------------------------------------------------------
+   2. GIR SCHEDULING  (compressed in-lesson Pimsleur schedule)
+   Interleaves new items with reviews at expanding gaps: 2 → 5 → 12 → 25.
+   ------------------------------------------------------------------------- */
+
+const GIR_SCHEDULE = [2, 5, 12, 25];
+
+function expandInterval(current) {
+  const idx = GIR_SCHEDULE.indexOf(current);
+  return idx < GIR_SCHEDULE.length - 1 ? GIR_SCHEDULE[idx + 1] : 25;
+}
+
+function buildLessonSequence(newItems) {
+  const sequence = [];
+  let reviewQueue = []; // { item, interval, nextAt, reviews }
+  let position = 0;
+
+  const sortQueue = () => reviewQueue.sort((a, b) => a.nextAt - b.nextAt);
+
+  for (const item of newItems) {
+    // Insert any reviews due at or before this position.
+    while (reviewQueue.length > 0 && reviewQueue[0].nextAt <= position) {
+      const review = reviewQueue.shift();
+      sequence.push({ ...review.item, type: "review", reviewNum: review.reviews + 1 });
+      const nextInterval = expandInterval(review.interval);
+      reviewQueue.push({
+        item: review.item,
+        interval: nextInterval,
+        nextAt: position + nextInterval,
+        reviews: review.reviews + 1,
+      });
+      sortQueue();
+      position++;
+    }
+
+    // Introduce the new item.
+    sequence.push({ ...item, type: "new" });
+    position++;
+
+    // Schedule its first review (2 items later).
+    reviewQueue.push({ item, interval: 2, nextAt: position + 2, reviews: 0 });
+    sortQueue();
+  }
+
+  // Drain remaining reviews into an end-of-lesson review block.
+  sortQueue();
+  while (reviewQueue.length > 0) {
+    const review = reviewQueue.shift();
+    sequence.push({ ...review.item, type: "review", reviewNum: review.reviews + 1, endReview: true });
+  }
+
+  return sequence;
+}
+
+/* -------------------------------------------------------------------------
+   3. SPEECH  (Web Speech API with language fallback)
+   ------------------------------------------------------------------------- */
+
+// Base quality score: prefer neural/premium voices, penalize "compact".
+function baseVoiceScore(v) {
+  let s = 0;
+  const name = (v.name || "").toLowerCase();
+  if (name.includes("google")) s += 10;
+  if (name.includes("neural") || name.includes("natural")) s += 10;
+  if (name.includes("premium")) s += 8;
+  if (name.includes("enhanced")) s += 5;
+  if (name.includes("compact")) s -= 10;
+  return s;
+}
+
+function scoreSpanish(v) {
+  let s = baseVoiceScore(v);
+  const lang = (v.lang || "").toLowerCase();
+  if (lang === "es-sv") s += 6; // Salvadoran, if it ever exists
+  if (lang === "es-419" || lang === "es-mx") s += 3; // Latin American proxies
+  if (lang === "es-us") s += 2;
+  return s;
+}
+
+function scoreEnglish(v) {
+  let s = baseVoiceScore(v);
+  if ((v.lang || "").toLowerCase().startsWith("en-us")) s += 3;
+  return s;
+}
+
+// Speak a string with a specific voice. Returns a Promise that resolves
+// when speech ends (with a safety-net timeout in case onend never fires).
+function speakWithVoice(text, voice, rate = 0.85, fallbackLang) {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      resolve();
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (voice) {
+      u.voice = voice;
+      u.lang = voice.lang;
+    } else if (fallbackLang) {
+      u.lang = fallbackLang;
+    }
+    u.rate = rate;
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      resolve();
+    };
+    u.onend = finish;
+    u.onerror = finish;
+    window.speechSynthesis.speak(u);
+    setTimeout(finish, Math.max(1500, text.length * 90 + 1200));
+  });
+}
+
+// Loads ALL installed Spanish + English voices (sorted by quality) and keeps
+// the lists fresh via the async `onvoiceschanged` event.
+function useVoices() {
+  const [spanishVoices, setSpanishVoices] = useState([]);
+  const [englishVoices, setEnglishVoices] = useState([]);
+  const [supported, setSupported] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      setSupported(false);
+      return;
+    }
+    const load = () => {
+      const all = window.speechSynthesis.getVoices();
+      if (!all || !all.length) return;
+      const es = all
+        .filter((v) => (v.lang || "").toLowerCase().startsWith("es"))
+        .sort((a, b) => scoreSpanish(b) - scoreSpanish(a));
+      const en = all
+        .filter((v) => (v.lang || "").toLowerCase().startsWith("en"))
+        .sort((a, b) => scoreEnglish(b) - scoreEnglish(a));
+      setSpanishVoices(es);
+      setEnglishVoices(en);
+    };
+    load();
+    // Browsers populate voices asynchronously — re-load when ready.
+    window.speechSynthesis.onvoiceschanged = load;
+    const t = setTimeout(load, 400);
+    return () => {
+      clearTimeout(t);
+      if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
+
+  return { spanishVoices, englishVoices, supported };
+}
+
+/* -------------------------------------------------------------------------
+   4. SMALL UI HELPERS
+   ------------------------------------------------------------------------- */
+
+function Pill({ children, color = "#1f2937", text = "#cbd5e1" }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide"
+      style={{ backgroundColor: color, color: text }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function ProgressBar({ sequence, index }) {
+  return (
+    <div className="w-full">
+      <div className="flex gap-1 w-full">
+        {sequence.map((item, i) => {
+          const done = i < index;
+          const current = i === index;
+          const isReview = item.type === "review";
+          let bg = "#27303f";
+          if (done) bg = isReview ? SV_BLUE_SOFT : SV_BLUE;
+          if (current) bg = "#facc15";
+          return (
+            <div
+              key={i}
+              className="h-1.5 flex-1 rounded-full transition-all duration-300"
+              style={{ backgroundColor: bg, opacity: current ? 1 : done ? 0.95 : 0.5 }}
+              title={`${item.id} · ${item.type}`}
+            />
+          );
+        })}
+      </div>
+      <div className="flex justify-between mt-2 text-xs text-slate-400">
+        <span>
+          Item {Math.min(index + 1, sequence.length)} of {sequence.length}
+        </span>
+        <span className="flex items-center gap-3">
+          <span className="flex items-center gap-1">
+            <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: SV_BLUE }} /> new
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: SV_BLUE_SOFT }} /> review
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   5. LESSON SELECTOR (home)
+   ------------------------------------------------------------------------- */
+
+function LessonSelector({ onSelect, onOpenSettings, speechSupported }) {
+  return (
+    <div className="max-w-2xl mx-auto px-5 py-10">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl"
+            style={{ backgroundColor: SV_BLUE }}
+          >
+            🫓
+          </div>
+          <div>
+            <h1 className="text-2xl font-extrabold text-white leading-tight">Habla Guanaca</h1>
+            <p className="text-sm text-slate-400">Salvadoran Spanish · the Pimsleur way</p>
+          </div>
+        </div>
+        <button
+          onClick={onOpenSettings}
+          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+          aria-label="Settings"
+        >
+          <Settings size={20} />
+        </button>
+      </div>
+
+      {!speechSupported && (
+        <div className="mb-6 px-4 py-3 rounded-xl bg-amber-950/60 border border-amber-800 text-amber-200 text-sm">
+          Your browser doesn't expose the Web Speech API, so audio is unavailable. You can still
+          read and practice every lesson — text is shown for every step.
+        </div>
+      )}
+
+      <p className="text-slate-300 mb-6 leading-relaxed">
+        Audio-first lessons in <span style={{ color: SV_BLUE_SOFT }} className="font-semibold">caliche</span> —
+        real Salvadoran Spanish with <em>vos</em>, not textbook Spanish. Each lesson runs the
+        prompt → pause → reveal loop with graduated-interval review built in.
+      </p>
+
+      <div className="space-y-3">
+        {LESSONS.map((lesson, i) => (
+          <button
+            key={lesson.id}
+            onClick={() => onSelect(lesson.id)}
+            className="w-full text-left group rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 transition-all p-4 flex items-center gap-4"
+          >
+            <div
+              className="w-12 h-12 shrink-0 rounded-xl flex items-center justify-center font-extrabold text-white text-lg"
+              style={{ backgroundColor: i % 2 ? SV_BLUE_SOFT : SV_BLUE }}
+            >
+              {i + 1}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-bold text-white truncate">{lesson.title}</span>
+                <span className="text-slate-400 text-sm">· {lesson.subtitle}</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-0.5 line-clamp-2">{lesson.description}</p>
+              <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
+                <span className="flex items-center gap-1">
+                  <Clock size={12} /> ~{lesson.estimatedMinutes} min
+                </span>
+                <span className="flex items-center gap-1">
+                  <Sparkles size={12} /> {lesson.items.length} new
+                </span>
+              </div>
+            </div>
+            <ChevronRight
+              size={22}
+              className="text-slate-600 group-hover:text-slate-300 transition-colors shrink-0"
+            />
+          </button>
+        ))}
+      </div>
+
+      <p className="text-center text-xs text-slate-600 mt-10">
+        Tip: Chrome on desktop tends to have the best Latin American Spanish voices.
+      </p>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   6. SETTINGS PANEL
+   ------------------------------------------------------------------------- */
+
+function VoicePicker({ label, voices, selected, onSelect, previewText, emptyHint }) {
+  return (
+    <div>
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-200 mb-3">
+        <Volume2 size={16} /> {label}
+      </label>
+      {voices.length === 0 ? (
+        <p className="text-xs text-slate-500 italic">{emptyHint}</p>
+      ) : (
+        <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+          {voices.map((voice, i) => {
+            const active = selected?.name === voice.name && selected?.lang === voice.lang;
+            return (
+              <button
+                key={voice.name + voice.lang + i}
+                onClick={() => {
+                  onSelect(voice);
+                  speakWithVoice(previewText, voice, 0.85);
+                }}
+                className="w-full text-left px-3 py-2 rounded-xl text-sm flex items-center justify-between gap-2 transition-colors border"
+                style={
+                  active
+                    ? { backgroundColor: "#0b2a5b", borderColor: SV_BLUE, color: "#dbeafe" }
+                    : { backgroundColor: "#1e293b", borderColor: "#334155", color: "#cbd5e1" }
+                }
+              >
+                <span className="min-w-0 truncate">
+                  {voice.name.replace(/Microsoft |Google |Apple /gi, "")}
+                  <span className="text-slate-500 ml-1.5 text-xs">{voice.lang}</span>
+                </span>
+                {active ? (
+                  <Check size={14} style={{ color: SV_BLUE_SOFT }} className="shrink-0" />
+                ) : (
+                  <Volume2 size={13} className="shrink-0 text-slate-500" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+      <p className="text-xs text-slate-500 mt-1.5">Tap a voice to select and hear a preview.</p>
+    </div>
+  );
+}
+
+function SettingsPanel({
+  settings,
+  setSettings,
+  spanishVoices,
+  englishVoices,
+  esVoice,
+  enVoice,
+  setEsVoice,
+  setEnVoice,
+  onClose,
+}) {
+  const update = (k, v) => setSettings((s) => ({ ...s, [k]: v }));
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex justify-center items-start p-4">
+      <div className="w-full max-w-md rounded-3xl bg-slate-900 border border-slate-700 p-6 shadow-2xl my-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <Settings size={18} /> Settings
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-slate-800 text-slate-400"
+            aria-label="Close settings"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <VoicePicker
+            label="Spanish voice"
+            voices={spanishVoices}
+            selected={esVoice}
+            onSelect={setEsVoice}
+            previewText="¡Qué ondas! ¿Cómo estás vos?"
+            emptyHint="No Spanish voices installed on this device — playback will use the browser default if available."
+          />
+
+          <VoicePicker
+            label="English voice"
+            voices={englishVoices}
+            selected={enVoice}
+            onSelect={setEnVoice}
+            previewText="How do you say this in Spanish?"
+            emptyHint="No English voices installed on this device."
+          />
+
+          <div>
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-200 mb-3">
+              <Gauge size={16} /> Speech speed
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { v: 0.7, label: "Slow", sub: "0.7×" },
+                { v: 0.85, label: "Default", sub: "0.85×" },
+                { v: 1.0, label: "Natural", sub: "1.0×" },
+              ].map((opt) => (
+                <button
+                  key={opt.v}
+                  onClick={() => update("rate", opt.v)}
+                  className="py-2.5 rounded-xl text-sm font-semibold transition-colors border"
+                  style={
+                    settings.rate === opt.v
+                      ? { backgroundColor: SV_BLUE, borderColor: SV_BLUE, color: "white" }
+                      : { backgroundColor: "#1e293b", borderColor: "#334155", color: "#cbd5e1" }
+                  }
+                >
+                  {opt.label}
+                  <span className="block text-xs opacity-70">{opt.sub}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-3">
+              <span className="flex items-center gap-2">
+                <Clock size={16} /> Pause length
+              </span>
+              <span className="text-slate-400 font-normal">{settings.pause}s</span>
+            </label>
+            <input
+              type="range"
+              min={2}
+              max={8}
+              step={1}
+              value={settings.pause}
+              onChange={(e) => update("pause", Number(e.target.value))}
+              className="w-full accent-blue-600"
+              style={{ accentColor: SV_BLUE }}
+            />
+            <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <span>2s</span>
+              <span>8s</span>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Silence after the prompt — your window to answer out loud before the reveal.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-200">
+              {settings.showText ? <Eye size={16} /> : <EyeOff size={16} />} Show Spanish text
+            </label>
+            <button
+              onClick={() => update("showText", !settings.showText)}
+              className="relative w-12 h-7 rounded-full transition-colors"
+              style={{ backgroundColor: settings.showText ? SV_BLUE : "#334155" }}
+              aria-pressed={settings.showText}
+            >
+              <span
+                className="absolute top-1 w-5 h-5 rounded-full bg-white transition-all"
+                style={{ left: settings.showText ? "26px" : "4px" }}
+              />
+            </button>
+          </div>
+          {!settings.showText && (
+            <p className="-mt-3 text-xs text-slate-500">
+              Audio-only mode: the Spanish answer stays hidden until you tap to peek. Truer to the
+              Pimsleur method.
+            </p>
+          )}
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-200">
+              <Play size={16} /> Auto-advance
+            </label>
+            <button
+              onClick={() => update("autoAdvance", !settings.autoAdvance)}
+              className="relative w-12 h-7 rounded-full transition-colors"
+              style={{ backgroundColor: settings.autoAdvance ? SV_BLUE : "#334155" }}
+              aria-pressed={settings.autoAdvance}
+            >
+              <span
+                className="absolute top-1 w-5 h-5 rounded-full bg-white transition-all"
+                style={{ left: settings.autoAdvance ? "26px" : "4px" }}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-200">
+              {settings.ttsEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />} Text-to-speech
+            </label>
+            <button
+              onClick={() => update("ttsEnabled", !settings.ttsEnabled)}
+              className="relative w-12 h-7 rounded-full transition-colors"
+              style={{ backgroundColor: settings.ttsEnabled ? SV_BLUE : "#334155" }}
+              aria-pressed={settings.ttsEnabled}
+            >
+              <span
+                className="absolute top-1 w-5 h-5 rounded-full bg-white transition-all"
+                style={{ left: settings.ttsEnabled ? "26px" : "4px" }}
+              />
+            </button>
+          </div>
+          {!settings.ttsEnabled && (
+            <p className="-mt-3 text-xs text-slate-500">
+              Audio off — lessons run silently using the on-screen text and timers.
+            </p>
+          )}
+        </div>
+
+        <button
+          onClick={onClose}
+          className="w-full mt-7 py-3 rounded-xl font-bold text-white"
+          style={{ backgroundColor: SV_BLUE }}
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   7. LESSON ENGINE (the state machine)
+   phases: intro → (prompt → anticipation → reveal)* → done
+   ------------------------------------------------------------------------- */
+
+const PHASE = {
+  INTRO: "intro",
+  PROMPT: "prompt",
+  ANTICIPATION: "anticipation",
+  REVEAL: "reveal",
+};
+
+function LessonEngine({ lesson, settings, esVoice, enVoice, onExit, onComplete }) {
+  const sequence = useMemo(() => buildLessonSequence(lesson.items), [lesson]);
+
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState(PHASE.INTRO);
+  const [countdown, setCountdown] = useState(settings.pause);
+  const [peek, setPeek] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+
+  const timersRef = useRef([]);
+  const startRef = useRef(0);
+
+  const current = sequence[index];
+
+  // ---- speech helpers --------------------------------------------------
+  const cancelSpeech = useCallback(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
+  }, []);
+
+  const clearTimers = useCallback(() => {
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
+  }, []);
+
+  const addTimer = useCallback((fn, ms) => {
+    const t = setTimeout(fn, ms);
+    timersRef.current.push(t);
+    return t;
+  }, []);
+
+  const speak = useCallback(
+    (text, kind) =>
+      new Promise((resolve) => {
+        if (
+          !settings.ttsEnabled ||
+          typeof window === "undefined" ||
+          !window.speechSynthesis
+        ) {
+          resolve();
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        const voice = kind === "es" ? esVoice : enVoice;
+        if (voice) {
+          u.voice = voice;
+          u.lang = voice.lang;
+        } else {
+          u.lang = kind === "es" ? "es-419" : "en-US";
+        }
+        u.rate = kind === "es" ? settings.rate : Math.min(1, settings.rate + 0.1);
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          resolve();
+        };
+        u.onend = finish;
+        u.onerror = finish;
+        setSpeaking(true);
+        window.speechSynthesis.speak(u);
+        // Safety net: resolve even if onend never fires.
+        addTimer(finish, Math.max(1500, text.length * 90 + 1200));
+      }).then(() => setSpeaking(false)),
+    [esVoice, enVoice, settings.rate, settings.ttsEnabled, addTimer]
+  );
+
+  // ---- phase orchestration --------------------------------------------
+  const goToReveal = useCallback(() => {
+    clearTimers();
+    setPhase(PHASE.REVEAL);
+  }, [clearTimers]);
+
+  const advance = useCallback(() => {
+    clearTimers();
+    cancelSpeech();
+    setPeek(false);
+    if (index + 1 >= sequence.length) {
+      onComplete(sequence);
+    } else {
+      setIndex((i) => i + 1);
+      setPhase(PHASE.PROMPT);
+    }
+  }, [clearTimers, cancelSpeech, index, sequence, onComplete]);
+
+  const startItem = useCallback(() => {
+    setPhase(PHASE.PROMPT);
+  }, []);
+
+  // Drive each phase with effects keyed on (phase, index).
+  useEffect(() => {
+    if (phase === PHASE.PROMPT && current) {
+      let cancelled = false;
+      speak(current.promptEn, "en").then(() => {
+        if (!cancelled) addTimer(() => setPhase(PHASE.ANTICIPATION), 200);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+  }, [phase, index]); // eslint-disable-line
+
+  useEffect(() => {
+    if (phase === PHASE.ANTICIPATION) {
+      setCountdown(settings.pause);
+      startRef.current = Date.now();
+      const tick = () => {
+        const elapsed = (Date.now() - startRef.current) / 1000;
+        const remaining = Math.max(0, settings.pause - elapsed);
+        setCountdown(remaining);
+        if (remaining <= 0) {
+          goToReveal();
+        } else {
+          addTimer(tick, 100);
+        }
+      };
+      addTimer(tick, 100);
+      return () => clearTimers();
+    }
+  }, [phase, index]); // eslint-disable-line
+
+  useEffect(() => {
+    if (phase === PHASE.REVEAL && current) {
+      let cancelled = false;
+      speak(current.targetEs, "es").then(() => {
+        if (!cancelled && settings.autoAdvance) {
+          addTimer(advance, 1400);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+  }, [phase, index]); // eslint-disable-line
+
+  // Cleanup on unmount.
+  useEffect(() => {
+    return () => {
+      clearTimers();
+      cancelSpeech();
+    };
+  }, [clearTimers, cancelSpeech]);
+
+  const repeat = useCallback(() => {
+    if (phase === PHASE.REVEAL) speak(current.targetEs, "es");
+    else speak(current.promptEn, "en");
+  }, [phase, current, speak]);
+
+  const skipPause = useCallback(() => {
+    if (phase === PHASE.ANTICIPATION) goToReveal();
+  }, [phase, goToReveal]);
+
+  // ---- INTRO screen ----------------------------------------------------
+  if (phase === PHASE.INTRO) {
+    return (
+      <div className="max-w-2xl mx-auto px-5 py-8">
+        <button
+          onClick={onExit}
+          className="flex items-center gap-1.5 text-slate-400 hover:text-white text-sm mb-8 transition-colors"
+        >
+          <Home size={16} /> All lessons
+        </button>
+
+        <div className="rounded-3xl bg-slate-800/70 border border-slate-700 p-7">
+          <Pill color="#0b2a5b" text="#9dc0ff">
+            <Sparkles size={12} /> Lesson {lesson.id.replace("L0", "")}
+          </Pill>
+          <h1 className="text-3xl font-extrabold text-white mt-4">{lesson.title}</h1>
+          <p className="text-lg font-semibold mb-1" style={{ color: SV_BLUE_SOFT }}>
+            {lesson.subtitle}
+          </p>
+          <p className="text-slate-300 leading-relaxed mt-3">{lesson.description}</p>
+
+          {lesson.dialogue && (
+            <div className="mt-6 rounded-2xl bg-slate-900/70 border border-slate-700 p-4">
+              <p className="text-xs font-semibold text-slate-400 flex items-center gap-1.5 mb-3">
+                <MessageCircle size={13} /> {lesson.dialogue.context}
+              </p>
+              <div className="space-y-2.5">
+                {lesson.dialogue.lines.map((line, i) => (
+                  <div key={i} className="flex gap-2.5">
+                    <span
+                      className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
+                      style={{ backgroundColor: line.speaker === "A" ? SV_BLUE : SV_BLUE_SOFT }}
+                    >
+                      {line.speaker}
+                    </span>
+                    <div>
+                      <p className="text-white font-medium leading-snug">{line.textEs}</p>
+                      <p className="text-slate-500 text-sm leading-snug">{line.textEn}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center gap-4 mt-6 text-sm text-slate-400">
+            <span className="flex items-center gap-1.5">
+              <Clock size={14} /> ~{lesson.estimatedMinutes} min
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Sparkles size={14} /> {lesson.items.length} new · {sequence.length - lesson.items.length} reviews
+            </span>
+          </div>
+        </div>
+
+        <button
+          onClick={startItem}
+          className="w-full mt-6 py-4 rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
+          style={{ backgroundColor: SV_BLUE }}
+        >
+          <Play size={20} /> Start lesson
+        </button>
+        <p className="text-center text-xs text-slate-500 mt-3">
+          Listen, then answer out loud during the pause — say it before the reveal.
+        </p>
+      </div>
+    );
+  }
+
+  // ---- PRACTICE screen (prompt / anticipation / reveal) ----------------
+  const isReview = current?.type === "review";
+  const showSpanish = phase === PHASE.REVEAL && (settings.showText || peek);
+
+  return (
+    <div className="max-w-2xl mx-auto px-5 py-6 min-h-[80vh] flex flex-col">
+      {/* Top bar */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={onExit}
+          className="flex items-center gap-1.5 text-slate-400 hover:text-white text-sm transition-colors"
+        >
+          <Home size={16} /> Exit
+        </button>
+        <span className="text-sm font-semibold text-slate-300">{lesson.title}</span>
+      </div>
+
+      <ProgressBar sequence={sequence} index={index} />
+
+      {/* Phase + item meta */}
+      <div className="flex items-center gap-2 mt-6 mb-2">
+        {isReview ? (
+          <Pill color="#13315c" text="#9dc0ff">
+            <Repeat size={12} /> Review{current.reviewNum ? ` #${current.reviewNum}` : ""}
+          </Pill>
+        ) : (
+          <Pill color="#0b2a5b" text="#9dc0ff">
+            <Sparkles size={12} /> New word
+          </Pill>
+        )}
+        {current.endReview && (
+          <Pill color="#3b0764" text="#e9d5ff">
+            End-of-lesson recall
+          </Pill>
+        )}
+        <span className="ml-auto text-xs text-slate-500">{current.id}</span>
+      </div>
+
+      {/* Card */}
+      <div className="flex-1 flex flex-col">
+        <div
+          onClick={() => {
+            if (phase === PHASE.ANTICIPATION) skipPause();
+            else if (phase === PHASE.REVEAL) advance();
+          }}
+          className="flex-1 rounded-3xl bg-slate-800/70 border border-slate-700 p-7 flex flex-col items-center justify-center text-center cursor-pointer select-none transition-colors hover:border-slate-600"
+        >
+          {/* English prompt — always visible from prompt phase on */}
+          <p className="text-xs uppercase tracking-widest text-slate-500 mb-2">Say in Salvadoran Spanish</p>
+          <p className="text-2xl sm:text-3xl font-bold text-white leading-snug">{current.promptEn}</p>
+
+          {/* Anticipation timer */}
+          {phase === PHASE.ANTICIPATION && (
+            <div className="mt-8 flex flex-col items-center">
+              <div className="relative w-24 h-24">
+                <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="44" fill="none" stroke="#334155" strokeWidth="8" />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="44"
+                    fill="none"
+                    stroke={SV_BLUE_SOFT}
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeDasharray={2 * Math.PI * 44}
+                    strokeDashoffset={2 * Math.PI * 44 * (1 - countdown / settings.pause)}
+                    style={{ transition: "stroke-dashoffset 0.1s linear" }}
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold text-white">
+                  {Math.ceil(countdown)}
+                </span>
+              </div>
+              <p className="text-slate-400 text-sm mt-4 animate-pulse">Answer out loud now…</p>
+              <p className="text-slate-600 text-xs mt-1">tap to skip</p>
+            </div>
+          )}
+
+          {/* Prompt phase: listening indicator */}
+          {phase === PHASE.PROMPT && (
+            <div className="mt-8 flex items-center gap-2 text-slate-400">
+              <Volume2 size={18} className={speaking ? "animate-pulse" : ""} />
+              <span className="text-sm">Listen…</span>
+            </div>
+          )}
+
+          {/* Reveal */}
+          {phase === PHASE.REVEAL && (
+            <div className="mt-7 w-full">
+              <div className="h-px w-full bg-slate-700 mb-6" />
+              {showSpanish ? (
+                <>
+                  <p className="text-3xl sm:text-4xl font-extrabold leading-tight" style={{ color: SV_BLUE_SOFT }}>
+                    {current.targetEs}
+                  </p>
+                  {current.pron && (
+                    <p className="text-slate-400 mt-2 text-lg font-light italic">[{current.pron}]</p>
+                  )}
+                  {current.standardEs && (
+                    <p className="text-slate-500 text-sm mt-3">
+                      Textbook Spanish: <span className="text-slate-400">{current.standardEs}</span>
+                    </p>
+                  )}
+                  {current.note && (
+                    <div className="mt-4 mx-auto max-w-sm rounded-xl bg-slate-900/70 border border-slate-700 px-4 py-3">
+                      <p className="text-sm text-slate-300 leading-snug flex items-start gap-2">
+                        <Sparkles size={14} className="mt-0.5 shrink-0" style={{ color: SV_BLUE_SOFT }} />
+                        {current.note}
+                      </p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPeek(true);
+                  }}
+                  className="mx-auto flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold"
+                >
+                  <Eye size={16} /> Tap to reveal text
+                </button>
+              )}
+              <p className="text-slate-600 text-xs mt-6">{settings.autoAdvance ? "advancing…" : "tap anywhere to continue"}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center justify-center gap-3 mt-5">
+          <button
+            onClick={repeat}
+            className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition-colors"
+          >
+            <RotateCcw size={18} /> Repeat
+          </button>
+          {phase === PHASE.ANTICIPATION && (
+            <button
+              onClick={skipPause}
+              className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-white transition-colors"
+              style={{ backgroundColor: SV_BLUE }}
+            >
+              Reveal <ChevronRight size={18} />
+            </button>
+          )}
+          {phase === PHASE.REVEAL && (
+            <button
+              onClick={advance}
+              className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-white transition-colors"
+              style={{ backgroundColor: SV_BLUE }}
+            >
+              {index + 1 >= sequence.length ? "Finish" : "Next"} <ChevronRight size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   8. LESSON COMPLETE
+   ------------------------------------------------------------------------- */
+
+function LessonComplete({ lesson, sequence, onHome, onNext, hasNext }) {
+  const newCount = sequence.filter((s) => s.type === "new").length;
+  const reviewCount = sequence.length - newCount;
+  const vocab = lesson.items;
+
+  return (
+    <div className="max-w-2xl mx-auto px-5 py-10">
+      <div className="text-center">
+        <div
+          className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-5"
+          style={{ backgroundColor: SV_BLUE }}
+        >
+          <Check size={40} className="text-white" strokeWidth={3} />
+        </div>
+        <h1 className="text-3xl font-extrabold text-white">¡Va pues! Lesson complete</h1>
+        <p className="text-slate-400 mt-2">
+          {lesson.title} · {lesson.subtitle}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 mt-8">
+        <Stat value={newCount} label="New words" />
+        <Stat value={reviewCount} label="Reviews" accent />
+        <Stat value={sequence.length} label="Total reps" />
+      </div>
+
+      <div className="mt-8 rounded-2xl bg-slate-800/70 border border-slate-700 p-5">
+        <h2 className="font-bold text-white mb-4 flex items-center gap-2">
+          <Sparkles size={16} style={{ color: SV_BLUE_SOFT }} /> What you learned
+        </h2>
+        <div className="space-y-3">
+          {vocab.map((v) => (
+            <div key={v.id} className="flex items-baseline justify-between gap-3 border-b border-slate-700/60 pb-2 last:border-0">
+              <div>
+                <span className="font-semibold" style={{ color: SV_BLUE_SOFT }}>
+                  {v.targetEs}
+                </span>
+                {v.pron && <span className="text-slate-500 text-sm italic ml-2">[{v.pron}]</span>}
+              </div>
+              <span className="text-slate-400 text-sm text-right shrink-0">{v.promptEn}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-3 mt-7">
+        <button
+          onClick={onHome}
+          className="flex-1 py-3.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center gap-2 transition-colors"
+        >
+          <Home size={18} /> All lessons
+        </button>
+        {hasNext && (
+          <button
+            onClick={onNext}
+            className="flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
+            style={{ backgroundColor: SV_BLUE }}
+          >
+            Next lesson <ChevronRight size={18} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Stat({ value, label, accent }) {
+  return (
+    <div className="rounded-2xl bg-slate-800/70 border border-slate-700 p-4 text-center">
+      <p className="text-3xl font-extrabold" style={{ color: accent ? SV_BLUE_SOFT : "white" }}>
+        {value}
+      </p>
+      <p className="text-xs text-slate-400 mt-1">{label}</p>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   9. ROOT APP
+   ------------------------------------------------------------------------- */
+
+function App() {
+  const { spanishVoices, englishVoices, supported } = useVoices();
+  const [screen, setScreen] = useState("home"); // home | lesson | complete
+  const [lessonId, setLessonId] = useState(null);
+  const [finishedSequence, setFinishedSequence] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, setSettings] = useState({
+    rate: 0.85,
+    pause: 4,
+    showText: true,
+    autoAdvance: true,
+    ttsEnabled: true,
+  });
+
+  // Selected voices — default to the top-scored option once lists load.
+  const [esVoice, setEsVoice] = useState(null);
+  const [enVoice, setEnVoice] = useState(null);
+
+  useEffect(() => {
+    if (!esVoice && spanishVoices.length) setEsVoice(spanishVoices[0]);
+  }, [spanishVoices, esVoice]);
+  useEffect(() => {
+    if (!enVoice && englishVoices.length) setEnVoice(englishVoices[0]);
+  }, [englishVoices, enVoice]);
+
+  const lesson = LESSONS.find((l) => l.id === lessonId) || null;
+  const lessonIdx = LESSONS.findIndex((l) => l.id === lessonId);
+  const hasNext = lessonIdx >= 0 && lessonIdx < LESSONS.length - 1;
+
+  const selectLesson = (id) => {
+    setLessonId(id);
+    setScreen("lesson");
+  };
+
+  const handleComplete = (sequence) => {
+    setFinishedSequence(sequence);
+    setScreen("complete");
+  };
+
+  const goNext = () => {
+    if (hasNext) {
+      setLessonId(LESSONS[lessonIdx + 1].id);
+      setScreen("lesson");
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-slate-950 text-white font-sans" style={{ fontFamily: "ui-sans-serif, system-ui, sans-serif" }}>
+      {/* subtle top accent bar — Salvadoran blue */}
+      <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${SV_BLUE}, ${SV_BLUE_SOFT}, ${SV_BLUE})` }} />
+
+      {screen === "home" && (
+        <LessonSelector
+          onSelect={selectLesson}
+          onOpenSettings={() => setShowSettings(true)}
+          speechSupported={supported}
+        />
+      )}
+
+      {screen === "lesson" && lesson && (
+        <LessonEngine
+          key={lesson.id}
+          lesson={lesson}
+          settings={settings}
+          esVoice={esVoice}
+          enVoice={enVoice}
+          onExit={() => setScreen("home")}
+          onComplete={handleComplete}
+        />
+      )}
+
+      {screen === "complete" && lesson && (
+        <LessonComplete
+          lesson={lesson}
+          sequence={finishedSequence}
+          hasNext={hasNext}
+          onHome={() => setScreen("home")}
+          onNext={goNext}
+        />
+      )}
+
+      {showSettings && (
+        <SettingsPanel
+          settings={settings}
+          setSettings={setSettings}
+          spanishVoices={spanishVoices}
+          englishVoices={englishVoices}
+          esVoice={esVoice}
+          enVoice={enVoice}
+          setEsVoice={setEsVoice}
+          setEnVoice={setEnVoice}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+
+createRoot(document.getElementById("root")).render(<App />);
+
+  </script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+</body>
+</html>
