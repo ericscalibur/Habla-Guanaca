@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#030712">
 <title>Habla Guanaca — Salvadoran Spanish</title>
@@ -66,7 +66,7 @@ const { useState, useEffect, useCallback, useRef } = React;
 
 const LESSONS = [
   {
-    id: "L01", title: "Mucho gusto", subtitle: "Meeting People", icon: "\u{1F44B}",
+    id: "L01", title: "Mucho gusto", subtitle: "Meeting People", icon: "👋",
     description: "Greetings, introductions, and your first voseo", estimatedMinutes: 12,
     dialogue: {
       context: "You’re at a pupusería in San Salvador. Someone sits next to you.",
@@ -91,7 +91,7 @@ const LESSONS = [
     ],
   },
   {
-    id: "L02", title: "¿De dónde sos vos?", subtitle: "Where Are You From?", icon: "\u{1F30E}",
+    id: "L02", title: "¿De dónde sos vos?", subtitle: "Where Are You From?", icon: "🌎",
     description: "Origins, nationalities, and the verb ‘ser’ with vos", estimatedMinutes: 14,
     dialogue: {
       context: "Continuing the conversation at the pupusería.",
@@ -116,7 +116,7 @@ const LESSONS = [
     ],
   },
   {
-    id: "L03", title: "Quiero pupusas", subtitle: "Ordering Food", icon: "\u{1FAD3}",
+    id: "L03", title: "Quiero pupusas", subtitle: "Ordering Food", icon: "🫓",
     description: "Ordering at a pupusería — numbers, prices, and food vocab", estimatedMinutes: 15,
     dialogue: {
       context: "You walk up to a pupusa stand at a market.",
@@ -142,7 +142,7 @@ const LESSONS = [
     ],
   },
   {
-    id: "L04", title: "¿Dónde queda...?", subtitle: "Getting Around", icon: "\u{1F5FA}️",
+    id: "L04", title: "¿Dónde queda...?", subtitle: "Getting Around", icon: "🗺️",
     description: "Asking for directions and navigating San Salvador", estimatedMinutes: 14,
     dialogue: {
       context: "You’re on the street and need to find a bus stop.",
@@ -167,7 +167,7 @@ const LESSONS = [
     ],
   },
   {
-    id: "L05", title: "La familia", subtitle: "Family & Relationships", icon: "\u{1F468}‍\u{1F469}‍\u{1F467}‍\u{1F466}",
+    id: "L05", title: "La familia", subtitle: "Family & Relationships", icon: "👨‍👩‍👧‍👦",
     description: "Family terms, possessives, and tener with vos", estimatedMinutes: 14,
     dialogue: {
       context: "Your new friend Carlos is showing you photos on his phone.",
@@ -435,9 +435,9 @@ function HablaGuanaca() {
         <h1 className="text-3xl font-bold mb-1"><span className="text-blue-400">Habla</span>{" "}<span className="text-emerald-400">Guanaca</span></h1>
         <p className="text-gray-400 text-sm">Salvadoran Spanish · Pimsleur Method</p>
         <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
-          <span className="flex items-center gap-1">\u{1F3A7} Audio-first</span>
-          <span className="flex items-center gap-1">\u{1F501} Spaced repetition</span>
-          <span className="flex items-center gap-1">\u{1F4D6} Voseo</span>
+          <span className="flex items-center gap-1">🎧 Audio-first</span>
+          <span className="flex items-center gap-1">🔁 Spaced repetition</span>
+          <span className="flex items-center gap-1">📖 Voseo</span>
         </div>
       </div>
       <button onClick={()=>setShowSettings(true)} className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-300"><IconSettings size={20}/></button>
@@ -465,7 +465,7 @@ function HablaGuanaca() {
         })}
       </div>
       <div className="mt-6 p-3 bg-blue-950/30 border border-blue-900/50 rounded-lg">
-        <p className="text-xs text-blue-300 font-semibold mb-1">\u{1F1F8}\u{1F1FB} Why Salvadoran Spanish?</p>
+        <p className="text-xs text-blue-300 font-semibold mb-1">🇸🇻 Why Salvadoran Spanish?</p>
         <p className="text-xs text-gray-400 leading-relaxed">Salvadorans use <span className="text-blue-300 font-medium">vos</span> instead of tú. You'll say "vos sos" not "tú eres," and "¿cómo estás vos?" not "¿cómo estás tú?" Plus local slang called <span className="text-emerald-300 font-medium">caliche</span> that you won't find in textbooks.</p>
       </div>
       {showSettings&&<SettingsModal {...settingsProps} onClose={()=>setShowSettings(false)}/>}
@@ -530,7 +530,7 @@ function HablaGuanaca() {
             <h2 className="text-3xl font-bold text-emerald-400 mb-2">{currentItem.targetEs}</h2>
             {showPronunciation&&currentItem.pronunciation&&<p className="text-gray-500 text-sm mb-3 font-mono">/{currentItem.pronunciation}/</p>}
             {currentItem.standardEs&&<p className="text-xs text-gray-600 mb-2">Textbook Spanish: <span className="text-gray-400">{currentItem.standardEs}</span></p>}
-            {currentItem.culturalNote&&<div className="bg-blue-950/30 border border-blue-900/40 rounded-lg p-2.5 mb-4 mx-auto max-w-xs"><p className="text-xs text-blue-300">{"\u{1F1F8}\u{1F1FB}"} {currentItem.culturalNote}</p></div>}
+            {currentItem.culturalNote&&<div className="bg-blue-950/30 border border-blue-900/40 rounded-lg p-2.5 mb-4 mx-auto max-w-xs"><p className="text-xs text-blue-300">{"🇸🇻"} {currentItem.culturalNote}</p></div>}
             <div className="flex items-center justify-center gap-3 mt-6">
               <button onClick={replayAudio} className="p-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-colors" title="Replay"><IconVolume size={18} className="text-gray-300"/></button>
               <button onClick={nextItem} className="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center gap-2">Continue <IconChevronRight size={16}/></button>
@@ -551,7 +551,7 @@ function HablaGuanaca() {
     return (
       <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center p-6 max-w-lg mx-auto">
         <div className="text-center">
-          <div className="text-6xl mb-4">{"\u{1F389}"}</div>
+          <div className="text-6xl mb-4">{"🎉"}</div>
           <h2 className="text-2xl font-bold mb-1">{"¡Chivo!"}</h2>
           <p className="text-gray-400 mb-6">You completed {selectedLesson?.title}</p>
           <div className="bg-gray-900 rounded-xl p-4 mb-6 border border-gray-800 inline-block">
