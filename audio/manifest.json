@@ -261,5 +261,1311 @@
   },
   "L05-DL04": {
     "es": "audio/es/L05-DL04.mp3"
+  },
+  "L06-01": {
+    "es": "audio/es/L06-01.mp3",
+    "en": "audio/en/L06-01.mp3"
+  },
+  "L06-02": {
+    "es": "audio/es/L06-02.mp3",
+    "en": "audio/en/L06-02.mp3"
+  },
+  "L06-03": {
+    "es": "audio/es/L06-03.mp3",
+    "en": "audio/en/L06-03.mp3"
+  },
+  "L06-04": {
+    "es": "audio/es/L06-04.mp3",
+    "en": "audio/en/L06-04.mp3"
+  },
+  "L06-05": {
+    "es": "audio/es/L06-05.mp3",
+    "en": "audio/en/L06-05.mp3"
+  },
+  "L06-06": {
+    "es": "audio/es/L06-06.mp3",
+    "en": "audio/en/L06-06.mp3"
+  },
+  "L06-07": {
+    "es": "audio/es/L06-07.mp3",
+    "en": "audio/en/L06-07.mp3"
+  },
+  "L06-08": {
+    "es": "audio/es/L06-08.mp3",
+    "en": "audio/en/L06-08.mp3"
+  },
+  "L06-09": {
+    "es": "audio/es/L06-09.mp3",
+    "en": "audio/en/L06-09.mp3"
+  },
+  "L06-10": {
+    "es": "audio/es/L06-10.mp3",
+    "en": "audio/en/L06-10.mp3"
+  },
+  "L06-DL01": {
+    "es": "audio/es/L06-DL01.mp3"
+  },
+  "L06-DL02": {
+    "es": "audio/es/L06-DL02.mp3"
+  },
+  "L06-DL03": {
+    "es": "audio/es/L06-DL03.mp3"
+  },
+  "L06-DL04": {
+    "es": "audio/es/L06-DL04.mp3"
+  },
+  "L06-DL05": {
+    "es": "audio/es/L06-DL05.mp3"
+  },
+  "L07-01": {
+    "es": "audio/es/L07-01.mp3",
+    "en": "audio/en/L07-01.mp3"
+  },
+  "L07-02": {
+    "es": "audio/es/L07-02.mp3",
+    "en": "audio/en/L07-02.mp3"
+  },
+  "L07-03": {
+    "es": "audio/es/L07-03.mp3",
+    "en": "audio/en/L07-03.mp3"
+  },
+  "L07-04": {
+    "es": "audio/es/L07-04.mp3",
+    "en": "audio/en/L07-04.mp3"
+  },
+  "L07-05": {
+    "es": "audio/es/L07-05.mp3",
+    "en": "audio/en/L07-05.mp3"
+  },
+  "L07-06": {
+    "es": "audio/es/L07-06.mp3",
+    "en": "audio/en/L07-06.mp3"
+  },
+  "L07-07": {
+    "es": "audio/es/L07-07.mp3",
+    "en": "audio/en/L07-07.mp3"
+  },
+  "L07-08": {
+    "es": "audio/es/L07-08.mp3",
+    "en": "audio/en/L07-08.mp3"
+  },
+  "L07-09": {
+    "es": "audio/es/L07-09.mp3",
+    "en": "audio/en/L07-09.mp3"
+  },
+  "L07-10": {
+    "es": "audio/es/L07-10.mp3",
+    "en": "audio/en/L07-10.mp3"
+  },
+  "L07-DL01": {
+    "es": "audio/es/L07-DL01.mp3"
+  },
+  "L07-DL02": {
+    "es": "audio/es/L07-DL02.mp3"
+  },
+  "L07-DL03": {
+    "es": "audio/es/L07-DL03.mp3"
+  },
+  "L07-DL04": {
+    "es": "audio/es/L07-DL04.mp3"
+  },
+  "L07-DL05": {
+    "es": "audio/es/L07-DL05.mp3"
+  },
+  "L08-01": {
+    "es": "audio/es/L08-01.mp3",
+    "en": "audio/en/L08-01.mp3"
+  },
+  "L08-02": {
+    "es": "audio/es/L08-02.mp3",
+    "en": "audio/en/L08-02.mp3"
+  },
+  "L08-03": {
+    "es": "audio/es/L08-03.mp3",
+    "en": "audio/en/L08-03.mp3"
+  },
+  "L08-04": {
+    "es": "audio/es/L08-04.mp3",
+    "en": "audio/en/L08-04.mp3"
+  },
+  "L08-05": {
+    "es": "audio/es/L08-05.mp3",
+    "en": "audio/en/L08-05.mp3"
+  },
+  "L08-06": {
+    "es": "audio/es/L08-06.mp3",
+    "en": "audio/en/L08-06.mp3"
+  },
+  "L08-07": {
+    "es": "audio/es/L08-07.mp3",
+    "en": "audio/en/L08-07.mp3"
+  },
+  "L08-08": {
+    "es": "audio/es/L08-08.mp3",
+    "en": "audio/en/L08-08.mp3"
+  },
+  "L08-09": {
+    "es": "audio/es/L08-09.mp3",
+    "en": "audio/en/L08-09.mp3"
+  },
+  "L08-10": {
+    "es": "audio/es/L08-10.mp3",
+    "en": "audio/en/L08-10.mp3"
+  },
+  "L08-DL01": {
+    "es": "audio/es/L08-DL01.mp3"
+  },
+  "L08-DL02": {
+    "es": "audio/es/L08-DL02.mp3"
+  },
+  "L08-DL03": {
+    "es": "audio/es/L08-DL03.mp3"
+  },
+  "L08-DL04": {
+    "es": "audio/es/L08-DL04.mp3"
+  },
+  "L09-01": {
+    "es": "audio/es/L09-01.mp3",
+    "en": "audio/en/L09-01.mp3"
+  },
+  "L09-02": {
+    "es": "audio/es/L09-02.mp3",
+    "en": "audio/en/L09-02.mp3"
+  },
+  "L09-03": {
+    "es": "audio/es/L09-03.mp3",
+    "en": "audio/en/L09-03.mp3"
+  },
+  "L09-04": {
+    "es": "audio/es/L09-04.mp3",
+    "en": "audio/en/L09-04.mp3"
+  },
+  "L09-05": {
+    "es": "audio/es/L09-05.mp3",
+    "en": "audio/en/L09-05.mp3"
+  },
+  "L09-06": {
+    "es": "audio/es/L09-06.mp3",
+    "en": "audio/en/L09-06.mp3"
+  },
+  "L09-07": {
+    "es": "audio/es/L09-07.mp3",
+    "en": "audio/en/L09-07.mp3"
+  },
+  "L09-08": {
+    "es": "audio/es/L09-08.mp3",
+    "en": "audio/en/L09-08.mp3"
+  },
+  "L09-09": {
+    "es": "audio/es/L09-09.mp3",
+    "en": "audio/en/L09-09.mp3"
+  },
+  "L09-10": {
+    "es": "audio/es/L09-10.mp3",
+    "en": "audio/en/L09-10.mp3"
+  },
+  "L09-DL01": {
+    "es": "audio/es/L09-DL01.mp3"
+  },
+  "L09-DL02": {
+    "es": "audio/es/L09-DL02.mp3"
+  },
+  "L09-DL03": {
+    "es": "audio/es/L09-DL03.mp3"
+  },
+  "L09-DL04": {
+    "es": "audio/es/L09-DL04.mp3"
+  },
+  "L10-01": {
+    "es": "audio/es/L10-01.mp3",
+    "en": "audio/en/L10-01.mp3"
+  },
+  "L10-02": {
+    "es": "audio/es/L10-02.mp3",
+    "en": "audio/en/L10-02.mp3"
+  },
+  "L10-03": {
+    "es": "audio/es/L10-03.mp3",
+    "en": "audio/en/L10-03.mp3"
+  },
+  "L10-04": {
+    "es": "audio/es/L10-04.mp3",
+    "en": "audio/en/L10-04.mp3"
+  },
+  "L10-05": {
+    "es": "audio/es/L10-05.mp3",
+    "en": "audio/en/L10-05.mp3"
+  },
+  "L10-06": {
+    "es": "audio/es/L10-06.mp3",
+    "en": "audio/en/L10-06.mp3"
+  },
+  "L10-07": {
+    "es": "audio/es/L10-07.mp3",
+    "en": "audio/en/L10-07.mp3"
+  },
+  "L10-08": {
+    "es": "audio/es/L10-08.mp3",
+    "en": "audio/en/L10-08.mp3"
+  },
+  "L10-09": {
+    "es": "audio/es/L10-09.mp3",
+    "en": "audio/en/L10-09.mp3"
+  },
+  "L10-10": {
+    "es": "audio/es/L10-10.mp3",
+    "en": "audio/en/L10-10.mp3"
+  },
+  "L10-DL01": {
+    "es": "audio/es/L10-DL01.mp3"
+  },
+  "L10-DL02": {
+    "es": "audio/es/L10-DL02.mp3"
+  },
+  "L10-DL03": {
+    "es": "audio/es/L10-DL03.mp3"
+  },
+  "L10-DL04": {
+    "es": "audio/es/L10-DL04.mp3"
+  },
+  "L11-01": {
+    "es": "audio/es/L11-01.mp3",
+    "en": "audio/en/L11-01.mp3"
+  },
+  "L11-02": {
+    "es": "audio/es/L11-02.mp3",
+    "en": "audio/en/L11-02.mp3"
+  },
+  "L11-03": {
+    "es": "audio/es/L11-03.mp3",
+    "en": "audio/en/L11-03.mp3"
+  },
+  "L11-04": {
+    "es": "audio/es/L11-04.mp3",
+    "en": "audio/en/L11-04.mp3"
+  },
+  "L11-05": {
+    "es": "audio/es/L11-05.mp3",
+    "en": "audio/en/L11-05.mp3"
+  },
+  "L11-06": {
+    "es": "audio/es/L11-06.mp3",
+    "en": "audio/en/L11-06.mp3"
+  },
+  "L11-07": {
+    "es": "audio/es/L11-07.mp3",
+    "en": "audio/en/L11-07.mp3"
+  },
+  "L11-08": {
+    "es": "audio/es/L11-08.mp3",
+    "en": "audio/en/L11-08.mp3"
+  },
+  "L11-09": {
+    "es": "audio/es/L11-09.mp3",
+    "en": "audio/en/L11-09.mp3"
+  },
+  "L11-10": {
+    "es": "audio/es/L11-10.mp3",
+    "en": "audio/en/L11-10.mp3"
+  },
+  "L11-DL01": {
+    "es": "audio/es/L11-DL01.mp3"
+  },
+  "L11-DL02": {
+    "es": "audio/es/L11-DL02.mp3"
+  },
+  "L11-DL03": {
+    "es": "audio/es/L11-DL03.mp3"
+  },
+  "L11-DL04": {
+    "es": "audio/es/L11-DL04.mp3"
+  },
+  "L12-01": {
+    "es": "audio/es/L12-01.mp3",
+    "en": "audio/en/L12-01.mp3"
+  },
+  "L12-02": {
+    "es": "audio/es/L12-02.mp3",
+    "en": "audio/en/L12-02.mp3"
+  },
+  "L12-03": {
+    "es": "audio/es/L12-03.mp3",
+    "en": "audio/en/L12-03.mp3"
+  },
+  "L12-04": {
+    "es": "audio/es/L12-04.mp3",
+    "en": "audio/en/L12-04.mp3"
+  },
+  "L12-05": {
+    "es": "audio/es/L12-05.mp3",
+    "en": "audio/en/L12-05.mp3"
+  },
+  "L12-06": {
+    "es": "audio/es/L12-06.mp3",
+    "en": "audio/en/L12-06.mp3"
+  },
+  "L12-07": {
+    "es": "audio/es/L12-07.mp3",
+    "en": "audio/en/L12-07.mp3"
+  },
+  "L12-08": {
+    "es": "audio/es/L12-08.mp3",
+    "en": "audio/en/L12-08.mp3"
+  },
+  "L12-09": {
+    "es": "audio/es/L12-09.mp3",
+    "en": "audio/en/L12-09.mp3"
+  },
+  "L12-10": {
+    "es": "audio/es/L12-10.mp3",
+    "en": "audio/en/L12-10.mp3"
+  },
+  "L12-DL01": {
+    "es": "audio/es/L12-DL01.mp3"
+  },
+  "L12-DL02": {
+    "es": "audio/es/L12-DL02.mp3"
+  },
+  "L12-DL03": {
+    "es": "audio/es/L12-DL03.mp3"
+  },
+  "L12-DL04": {
+    "es": "audio/es/L12-DL04.mp3"
+  },
+  "L13-01": {
+    "es": "audio/es/L13-01.mp3",
+    "en": "audio/en/L13-01.mp3"
+  },
+  "L13-02": {
+    "es": "audio/es/L13-02.mp3",
+    "en": "audio/en/L13-02.mp3"
+  },
+  "L13-03": {
+    "es": "audio/es/L13-03.mp3",
+    "en": "audio/en/L13-03.mp3"
+  },
+  "L13-04": {
+    "es": "audio/es/L13-04.mp3",
+    "en": "audio/en/L13-04.mp3"
+  },
+  "L13-05": {
+    "es": "audio/es/L13-05.mp3",
+    "en": "audio/en/L13-05.mp3"
+  },
+  "L13-06": {
+    "es": "audio/es/L13-06.mp3",
+    "en": "audio/en/L13-06.mp3"
+  },
+  "L13-07": {
+    "es": "audio/es/L13-07.mp3",
+    "en": "audio/en/L13-07.mp3"
+  },
+  "L13-08": {
+    "es": "audio/es/L13-08.mp3",
+    "en": "audio/en/L13-08.mp3"
+  },
+  "L13-09": {
+    "es": "audio/es/L13-09.mp3",
+    "en": "audio/en/L13-09.mp3"
+  },
+  "L13-10": {
+    "es": "audio/es/L13-10.mp3",
+    "en": "audio/en/L13-10.mp3"
+  },
+  "L13-DL01": {
+    "es": "audio/es/L13-DL01.mp3"
+  },
+  "L13-DL02": {
+    "es": "audio/es/L13-DL02.mp3"
+  },
+  "L13-DL03": {
+    "es": "audio/es/L13-DL03.mp3"
+  },
+  "L13-DL04": {
+    "es": "audio/es/L13-DL04.mp3"
+  },
+  "L14-01": {
+    "es": "audio/es/L14-01.mp3",
+    "en": "audio/en/L14-01.mp3"
+  },
+  "L14-02": {
+    "es": "audio/es/L14-02.mp3",
+    "en": "audio/en/L14-02.mp3"
+  },
+  "L14-03": {
+    "es": "audio/es/L14-03.mp3",
+    "en": "audio/en/L14-03.mp3"
+  },
+  "L14-04": {
+    "es": "audio/es/L14-04.mp3",
+    "en": "audio/en/L14-04.mp3"
+  },
+  "L14-05": {
+    "es": "audio/es/L14-05.mp3",
+    "en": "audio/en/L14-05.mp3"
+  },
+  "L14-06": {
+    "es": "audio/es/L14-06.mp3",
+    "en": "audio/en/L14-06.mp3"
+  },
+  "L14-07": {
+    "es": "audio/es/L14-07.mp3",
+    "en": "audio/en/L14-07.mp3"
+  },
+  "L14-08": {
+    "es": "audio/es/L14-08.mp3",
+    "en": "audio/en/L14-08.mp3"
+  },
+  "L14-09": {
+    "es": "audio/es/L14-09.mp3",
+    "en": "audio/en/L14-09.mp3"
+  },
+  "L14-10": {
+    "es": "audio/es/L14-10.mp3",
+    "en": "audio/en/L14-10.mp3"
+  },
+  "L14-DL01": {
+    "es": "audio/es/L14-DL01.mp3"
+  },
+  "L14-DL02": {
+    "es": "audio/es/L14-DL02.mp3"
+  },
+  "L14-DL03": {
+    "es": "audio/es/L14-DL03.mp3"
+  },
+  "L14-DL04": {
+    "es": "audio/es/L14-DL04.mp3"
+  },
+  "L15-01": {
+    "es": "audio/es/L15-01.mp3",
+    "en": "audio/en/L15-01.mp3"
+  },
+  "L15-02": {
+    "es": "audio/es/L15-02.mp3",
+    "en": "audio/en/L15-02.mp3"
+  },
+  "L15-03": {
+    "es": "audio/es/L15-03.mp3",
+    "en": "audio/en/L15-03.mp3"
+  },
+  "L15-04": {
+    "es": "audio/es/L15-04.mp3",
+    "en": "audio/en/L15-04.mp3"
+  },
+  "L15-05": {
+    "es": "audio/es/L15-05.mp3",
+    "en": "audio/en/L15-05.mp3"
+  },
+  "L15-06": {
+    "es": "audio/es/L15-06.mp3",
+    "en": "audio/en/L15-06.mp3"
+  },
+  "L15-07": {
+    "es": "audio/es/L15-07.mp3",
+    "en": "audio/en/L15-07.mp3"
+  },
+  "L15-08": {
+    "es": "audio/es/L15-08.mp3",
+    "en": "audio/en/L15-08.mp3"
+  },
+  "L15-09": {
+    "es": "audio/es/L15-09.mp3",
+    "en": "audio/en/L15-09.mp3"
+  },
+  "L15-10": {
+    "es": "audio/es/L15-10.mp3",
+    "en": "audio/en/L15-10.mp3"
+  },
+  "L15-DL01": {
+    "es": "audio/es/L15-DL01.mp3"
+  },
+  "L15-DL02": {
+    "es": "audio/es/L15-DL02.mp3"
+  },
+  "L15-DL03": {
+    "es": "audio/es/L15-DL03.mp3"
+  },
+  "L15-DL04": {
+    "es": "audio/es/L15-DL04.mp3"
+  },
+  "L16-01": {
+    "es": "audio/es/L16-01.mp3",
+    "en": "audio/en/L16-01.mp3"
+  },
+  "L16-02": {
+    "es": "audio/es/L16-02.mp3",
+    "en": "audio/en/L16-02.mp3"
+  },
+  "L16-03": {
+    "es": "audio/es/L16-03.mp3",
+    "en": "audio/en/L16-03.mp3"
+  },
+  "L16-04": {
+    "es": "audio/es/L16-04.mp3",
+    "en": "audio/en/L16-04.mp3"
+  },
+  "L16-05": {
+    "es": "audio/es/L16-05.mp3",
+    "en": "audio/en/L16-05.mp3"
+  },
+  "L16-06": {
+    "es": "audio/es/L16-06.mp3",
+    "en": "audio/en/L16-06.mp3"
+  },
+  "L16-07": {
+    "es": "audio/es/L16-07.mp3",
+    "en": "audio/en/L16-07.mp3"
+  },
+  "L16-08": {
+    "es": "audio/es/L16-08.mp3",
+    "en": "audio/en/L16-08.mp3"
+  },
+  "L16-09": {
+    "es": "audio/es/L16-09.mp3",
+    "en": "audio/en/L16-09.mp3"
+  },
+  "L16-10": {
+    "es": "audio/es/L16-10.mp3",
+    "en": "audio/en/L16-10.mp3"
+  },
+  "L16-DL01": {
+    "es": "audio/es/L16-DL01.mp3"
+  },
+  "L16-DL02": {
+    "es": "audio/es/L16-DL02.mp3"
+  },
+  "L16-DL03": {
+    "es": "audio/es/L16-DL03.mp3"
+  },
+  "L16-DL04": {
+    "es": "audio/es/L16-DL04.mp3"
+  },
+  "L17-01": {
+    "es": "audio/es/L17-01.mp3",
+    "en": "audio/en/L17-01.mp3"
+  },
+  "L17-02": {
+    "es": "audio/es/L17-02.mp3",
+    "en": "audio/en/L17-02.mp3"
+  },
+  "L17-03": {
+    "es": "audio/es/L17-03.mp3",
+    "en": "audio/en/L17-03.mp3"
+  },
+  "L17-04": {
+    "es": "audio/es/L17-04.mp3",
+    "en": "audio/en/L17-04.mp3"
+  },
+  "L17-05": {
+    "es": "audio/es/L17-05.mp3",
+    "en": "audio/en/L17-05.mp3"
+  },
+  "L17-06": {
+    "es": "audio/es/L17-06.mp3",
+    "en": "audio/en/L17-06.mp3"
+  },
+  "L17-07": {
+    "es": "audio/es/L17-07.mp3",
+    "en": "audio/en/L17-07.mp3"
+  },
+  "L17-08": {
+    "es": "audio/es/L17-08.mp3",
+    "en": "audio/en/L17-08.mp3"
+  },
+  "L17-09": {
+    "es": "audio/es/L17-09.mp3",
+    "en": "audio/en/L17-09.mp3"
+  },
+  "L17-10": {
+    "es": "audio/es/L17-10.mp3",
+    "en": "audio/en/L17-10.mp3"
+  },
+  "L17-DL01": {
+    "es": "audio/es/L17-DL01.mp3"
+  },
+  "L17-DL02": {
+    "es": "audio/es/L17-DL02.mp3"
+  },
+  "L17-DL03": {
+    "es": "audio/es/L17-DL03.mp3"
+  },
+  "L17-DL04": {
+    "es": "audio/es/L17-DL04.mp3"
+  },
+  "L18-01": {
+    "es": "audio/es/L18-01.mp3",
+    "en": "audio/en/L18-01.mp3"
+  },
+  "L18-02": {
+    "es": "audio/es/L18-02.mp3",
+    "en": "audio/en/L18-02.mp3"
+  },
+  "L18-03": {
+    "es": "audio/es/L18-03.mp3",
+    "en": "audio/en/L18-03.mp3"
+  },
+  "L18-04": {
+    "es": "audio/es/L18-04.mp3",
+    "en": "audio/en/L18-04.mp3"
+  },
+  "L18-05": {
+    "es": "audio/es/L18-05.mp3",
+    "en": "audio/en/L18-05.mp3"
+  },
+  "L18-06": {
+    "es": "audio/es/L18-06.mp3",
+    "en": "audio/en/L18-06.mp3"
+  },
+  "L18-07": {
+    "es": "audio/es/L18-07.mp3",
+    "en": "audio/en/L18-07.mp3"
+  },
+  "L18-08": {
+    "es": "audio/es/L18-08.mp3",
+    "en": "audio/en/L18-08.mp3"
+  },
+  "L18-09": {
+    "es": "audio/es/L18-09.mp3",
+    "en": "audio/en/L18-09.mp3"
+  },
+  "L18-10": {
+    "es": "audio/es/L18-10.mp3",
+    "en": "audio/en/L18-10.mp3"
+  },
+  "L18-DL01": {
+    "es": "audio/es/L18-DL01.mp3"
+  },
+  "L18-DL02": {
+    "es": "audio/es/L18-DL02.mp3"
+  },
+  "L18-DL03": {
+    "es": "audio/es/L18-DL03.mp3"
+  },
+  "L18-DL04": {
+    "es": "audio/es/L18-DL04.mp3"
+  },
+  "L19-01": {
+    "es": "audio/es/L19-01.mp3",
+    "en": "audio/en/L19-01.mp3"
+  },
+  "L19-02": {
+    "es": "audio/es/L19-02.mp3",
+    "en": "audio/en/L19-02.mp3"
+  },
+  "L19-03": {
+    "es": "audio/es/L19-03.mp3",
+    "en": "audio/en/L19-03.mp3"
+  },
+  "L19-04": {
+    "es": "audio/es/L19-04.mp3",
+    "en": "audio/en/L19-04.mp3"
+  },
+  "L19-05": {
+    "es": "audio/es/L19-05.mp3",
+    "en": "audio/en/L19-05.mp3"
+  },
+  "L19-06": {
+    "es": "audio/es/L19-06.mp3",
+    "en": "audio/en/L19-06.mp3"
+  },
+  "L19-07": {
+    "es": "audio/es/L19-07.mp3",
+    "en": "audio/en/L19-07.mp3"
+  },
+  "L19-08": {
+    "es": "audio/es/L19-08.mp3",
+    "en": "audio/en/L19-08.mp3"
+  },
+  "L19-09": {
+    "es": "audio/es/L19-09.mp3",
+    "en": "audio/en/L19-09.mp3"
+  },
+  "L19-10": {
+    "es": "audio/es/L19-10.mp3",
+    "en": "audio/en/L19-10.mp3"
+  },
+  "L19-DL01": {
+    "es": "audio/es/L19-DL01.mp3"
+  },
+  "L19-DL02": {
+    "es": "audio/es/L19-DL02.mp3"
+  },
+  "L19-DL03": {
+    "es": "audio/es/L19-DL03.mp3"
+  },
+  "L19-DL04": {
+    "es": "audio/es/L19-DL04.mp3"
+  },
+  "L20-01": {
+    "es": "audio/es/L20-01.mp3",
+    "en": "audio/en/L20-01.mp3"
+  },
+  "L20-02": {
+    "es": "audio/es/L20-02.mp3",
+    "en": "audio/en/L20-02.mp3"
+  },
+  "L20-03": {
+    "es": "audio/es/L20-03.mp3",
+    "en": "audio/en/L20-03.mp3"
+  },
+  "L20-04": {
+    "es": "audio/es/L20-04.mp3",
+    "en": "audio/en/L20-04.mp3"
+  },
+  "L20-05": {
+    "es": "audio/es/L20-05.mp3",
+    "en": "audio/en/L20-05.mp3"
+  },
+  "L20-06": {
+    "es": "audio/es/L20-06.mp3",
+    "en": "audio/en/L20-06.mp3"
+  },
+  "L20-07": {
+    "es": "audio/es/L20-07.mp3",
+    "en": "audio/en/L20-07.mp3"
+  },
+  "L20-08": {
+    "es": "audio/es/L20-08.mp3",
+    "en": "audio/en/L20-08.mp3"
+  },
+  "L20-09": {
+    "es": "audio/es/L20-09.mp3",
+    "en": "audio/en/L20-09.mp3"
+  },
+  "L20-10": {
+    "es": "audio/es/L20-10.mp3",
+    "en": "audio/en/L20-10.mp3"
+  },
+  "L20-DL01": {
+    "es": "audio/es/L20-DL01.mp3"
+  },
+  "L20-DL02": {
+    "es": "audio/es/L20-DL02.mp3"
+  },
+  "L20-DL03": {
+    "es": "audio/es/L20-DL03.mp3"
+  },
+  "L20-DL04": {
+    "es": "audio/es/L20-DL04.mp3"
+  },
+  "L21-01": {
+    "es": "audio/es/L21-01.mp3",
+    "en": "audio/en/L21-01.mp3"
+  },
+  "L21-02": {
+    "es": "audio/es/L21-02.mp3",
+    "en": "audio/en/L21-02.mp3"
+  },
+  "L21-03": {
+    "es": "audio/es/L21-03.mp3",
+    "en": "audio/en/L21-03.mp3"
+  },
+  "L21-04": {
+    "es": "audio/es/L21-04.mp3",
+    "en": "audio/en/L21-04.mp3"
+  },
+  "L21-05": {
+    "es": "audio/es/L21-05.mp3",
+    "en": "audio/en/L21-05.mp3"
+  },
+  "L21-06": {
+    "es": "audio/es/L21-06.mp3",
+    "en": "audio/en/L21-06.mp3"
+  },
+  "L21-07": {
+    "es": "audio/es/L21-07.mp3",
+    "en": "audio/en/L21-07.mp3"
+  },
+  "L21-08": {
+    "es": "audio/es/L21-08.mp3",
+    "en": "audio/en/L21-08.mp3"
+  },
+  "L21-09": {
+    "es": "audio/es/L21-09.mp3",
+    "en": "audio/en/L21-09.mp3"
+  },
+  "L21-10": {
+    "es": "audio/es/L21-10.mp3",
+    "en": "audio/en/L21-10.mp3"
+  },
+  "L21-DL01": {
+    "es": "audio/es/L21-DL01.mp3"
+  },
+  "L21-DL02": {
+    "es": "audio/es/L21-DL02.mp3"
+  },
+  "L21-DL03": {
+    "es": "audio/es/L21-DL03.mp3"
+  },
+  "L21-DL04": {
+    "es": "audio/es/L21-DL04.mp3"
+  },
+  "L22-01": {
+    "es": "audio/es/L22-01.mp3",
+    "en": "audio/en/L22-01.mp3"
+  },
+  "L22-02": {
+    "es": "audio/es/L22-02.mp3",
+    "en": "audio/en/L22-02.mp3"
+  },
+  "L22-03": {
+    "es": "audio/es/L22-03.mp3",
+    "en": "audio/en/L22-03.mp3"
+  },
+  "L22-04": {
+    "es": "audio/es/L22-04.mp3",
+    "en": "audio/en/L22-04.mp3"
+  },
+  "L22-05": {
+    "es": "audio/es/L22-05.mp3",
+    "en": "audio/en/L22-05.mp3"
+  },
+  "L22-06": {
+    "es": "audio/es/L22-06.mp3",
+    "en": "audio/en/L22-06.mp3"
+  },
+  "L22-07": {
+    "es": "audio/es/L22-07.mp3",
+    "en": "audio/en/L22-07.mp3"
+  },
+  "L22-08": {
+    "es": "audio/es/L22-08.mp3",
+    "en": "audio/en/L22-08.mp3"
+  },
+  "L22-09": {
+    "es": "audio/es/L22-09.mp3",
+    "en": "audio/en/L22-09.mp3"
+  },
+  "L22-10": {
+    "es": "audio/es/L22-10.mp3",
+    "en": "audio/en/L22-10.mp3"
+  },
+  "L22-DL01": {
+    "es": "audio/es/L22-DL01.mp3"
+  },
+  "L22-DL02": {
+    "es": "audio/es/L22-DL02.mp3"
+  },
+  "L22-DL03": {
+    "es": "audio/es/L22-DL03.mp3"
+  },
+  "L22-DL04": {
+    "es": "audio/es/L22-DL04.mp3"
+  },
+  "L23-01": {
+    "es": "audio/es/L23-01.mp3",
+    "en": "audio/en/L23-01.mp3"
+  },
+  "L23-02": {
+    "es": "audio/es/L23-02.mp3",
+    "en": "audio/en/L23-02.mp3"
+  },
+  "L23-03": {
+    "es": "audio/es/L23-03.mp3",
+    "en": "audio/en/L23-03.mp3"
+  },
+  "L23-04": {
+    "es": "audio/es/L23-04.mp3",
+    "en": "audio/en/L23-04.mp3"
+  },
+  "L23-05": {
+    "es": "audio/es/L23-05.mp3",
+    "en": "audio/en/L23-05.mp3"
+  },
+  "L23-06": {
+    "es": "audio/es/L23-06.mp3",
+    "en": "audio/en/L23-06.mp3"
+  },
+  "L23-07": {
+    "es": "audio/es/L23-07.mp3",
+    "en": "audio/en/L23-07.mp3"
+  },
+  "L23-08": {
+    "es": "audio/es/L23-08.mp3",
+    "en": "audio/en/L23-08.mp3"
+  },
+  "L23-09": {
+    "es": "audio/es/L23-09.mp3",
+    "en": "audio/en/L23-09.mp3"
+  },
+  "L23-10": {
+    "es": "audio/es/L23-10.mp3",
+    "en": "audio/en/L23-10.mp3"
+  },
+  "L23-DL01": {
+    "es": "audio/es/L23-DL01.mp3"
+  },
+  "L23-DL02": {
+    "es": "audio/es/L23-DL02.mp3"
+  },
+  "L23-DL03": {
+    "es": "audio/es/L23-DL03.mp3"
+  },
+  "L23-DL04": {
+    "es": "audio/es/L23-DL04.mp3"
+  },
+  "L24-01": {
+    "es": "audio/es/L24-01.mp3",
+    "en": "audio/en/L24-01.mp3"
+  },
+  "L24-02": {
+    "es": "audio/es/L24-02.mp3",
+    "en": "audio/en/L24-02.mp3"
+  },
+  "L24-03": {
+    "es": "audio/es/L24-03.mp3",
+    "en": "audio/en/L24-03.mp3"
+  },
+  "L24-04": {
+    "es": "audio/es/L24-04.mp3",
+    "en": "audio/en/L24-04.mp3"
+  },
+  "L24-05": {
+    "es": "audio/es/L24-05.mp3",
+    "en": "audio/en/L24-05.mp3"
+  },
+  "L24-06": {
+    "es": "audio/es/L24-06.mp3",
+    "en": "audio/en/L24-06.mp3"
+  },
+  "L24-07": {
+    "es": "audio/es/L24-07.mp3",
+    "en": "audio/en/L24-07.mp3"
+  },
+  "L24-08": {
+    "es": "audio/es/L24-08.mp3",
+    "en": "audio/en/L24-08.mp3"
+  },
+  "L24-09": {
+    "es": "audio/es/L24-09.mp3",
+    "en": "audio/en/L24-09.mp3"
+  },
+  "L24-10": {
+    "es": "audio/es/L24-10.mp3",
+    "en": "audio/en/L24-10.mp3"
+  },
+  "L24-DL01": {
+    "es": "audio/es/L24-DL01.mp3"
+  },
+  "L24-DL02": {
+    "es": "audio/es/L24-DL02.mp3"
+  },
+  "L24-DL03": {
+    "es": "audio/es/L24-DL03.mp3"
+  },
+  "L24-DL04": {
+    "es": "audio/es/L24-DL04.mp3"
+  },
+  "L25-01": {
+    "es": "audio/es/L25-01.mp3",
+    "en": "audio/en/L25-01.mp3"
+  },
+  "L25-02": {
+    "es": "audio/es/L25-02.mp3",
+    "en": "audio/en/L25-02.mp3"
+  },
+  "L25-03": {
+    "es": "audio/es/L25-03.mp3",
+    "en": "audio/en/L25-03.mp3"
+  },
+  "L25-04": {
+    "es": "audio/es/L25-04.mp3",
+    "en": "audio/en/L25-04.mp3"
+  },
+  "L25-05": {
+    "es": "audio/es/L25-05.mp3",
+    "en": "audio/en/L25-05.mp3"
+  },
+  "L25-06": {
+    "es": "audio/es/L25-06.mp3",
+    "en": "audio/en/L25-06.mp3"
+  },
+  "L25-07": {
+    "es": "audio/es/L25-07.mp3",
+    "en": "audio/en/L25-07.mp3"
+  },
+  "L25-08": {
+    "es": "audio/es/L25-08.mp3",
+    "en": "audio/en/L25-08.mp3"
+  },
+  "L25-09": {
+    "es": "audio/es/L25-09.mp3",
+    "en": "audio/en/L25-09.mp3"
+  },
+  "L25-10": {
+    "es": "audio/es/L25-10.mp3",
+    "en": "audio/en/L25-10.mp3"
+  },
+  "L25-DL01": {
+    "es": "audio/es/L25-DL01.mp3"
+  },
+  "L25-DL02": {
+    "es": "audio/es/L25-DL02.mp3"
+  },
+  "L25-DL03": {
+    "es": "audio/es/L25-DL03.mp3"
+  },
+  "L25-DL04": {
+    "es": "audio/es/L25-DL04.mp3"
+  },
+  "L26-01": {
+    "es": "audio/es/L26-01.mp3",
+    "en": "audio/en/L26-01.mp3"
+  },
+  "L26-02": {
+    "es": "audio/es/L26-02.mp3",
+    "en": "audio/en/L26-02.mp3"
+  },
+  "L26-03": {
+    "es": "audio/es/L26-03.mp3",
+    "en": "audio/en/L26-03.mp3"
+  },
+  "L26-04": {
+    "es": "audio/es/L26-04.mp3",
+    "en": "audio/en/L26-04.mp3"
+  },
+  "L26-05": {
+    "es": "audio/es/L26-05.mp3",
+    "en": "audio/en/L26-05.mp3"
+  },
+  "L26-06": {
+    "es": "audio/es/L26-06.mp3",
+    "en": "audio/en/L26-06.mp3"
+  },
+  "L26-07": {
+    "es": "audio/es/L26-07.mp3",
+    "en": "audio/en/L26-07.mp3"
+  },
+  "L26-08": {
+    "es": "audio/es/L26-08.mp3",
+    "en": "audio/en/L26-08.mp3"
+  },
+  "L26-09": {
+    "es": "audio/es/L26-09.mp3",
+    "en": "audio/en/L26-09.mp3"
+  },
+  "L26-10": {
+    "es": "audio/es/L26-10.mp3",
+    "en": "audio/en/L26-10.mp3"
+  },
+  "L26-DL01": {
+    "es": "audio/es/L26-DL01.mp3"
+  },
+  "L26-DL02": {
+    "es": "audio/es/L26-DL02.mp3"
+  },
+  "L26-DL03": {
+    "es": "audio/es/L26-DL03.mp3"
+  },
+  "L26-DL04": {
+    "es": "audio/es/L26-DL04.mp3"
+  },
+  "L27-01": {
+    "es": "audio/es/L27-01.mp3",
+    "en": "audio/en/L27-01.mp3"
+  },
+  "L27-02": {
+    "es": "audio/es/L27-02.mp3",
+    "en": "audio/en/L27-02.mp3"
+  },
+  "L27-03": {
+    "es": "audio/es/L27-03.mp3",
+    "en": "audio/en/L27-03.mp3"
+  },
+  "L27-04": {
+    "es": "audio/es/L27-04.mp3",
+    "en": "audio/en/L27-04.mp3"
+  },
+  "L27-05": {
+    "es": "audio/es/L27-05.mp3",
+    "en": "audio/en/L27-05.mp3"
+  },
+  "L27-06": {
+    "es": "audio/es/L27-06.mp3",
+    "en": "audio/en/L27-06.mp3"
+  },
+  "L27-07": {
+    "es": "audio/es/L27-07.mp3",
+    "en": "audio/en/L27-07.mp3"
+  },
+  "L27-08": {
+    "es": "audio/es/L27-08.mp3",
+    "en": "audio/en/L27-08.mp3"
+  },
+  "L27-09": {
+    "es": "audio/es/L27-09.mp3",
+    "en": "audio/en/L27-09.mp3"
+  },
+  "L27-10": {
+    "es": "audio/es/L27-10.mp3",
+    "en": "audio/en/L27-10.mp3"
+  },
+  "L27-DL01": {
+    "es": "audio/es/L27-DL01.mp3"
+  },
+  "L27-DL02": {
+    "es": "audio/es/L27-DL02.mp3"
+  },
+  "L27-DL03": {
+    "es": "audio/es/L27-DL03.mp3"
+  },
+  "L27-DL04": {
+    "es": "audio/es/L27-DL04.mp3"
+  },
+  "L28-01": {
+    "es": "audio/es/L28-01.mp3",
+    "en": "audio/en/L28-01.mp3"
+  },
+  "L28-02": {
+    "es": "audio/es/L28-02.mp3",
+    "en": "audio/en/L28-02.mp3"
+  },
+  "L28-03": {
+    "es": "audio/es/L28-03.mp3",
+    "en": "audio/en/L28-03.mp3"
+  },
+  "L28-04": {
+    "es": "audio/es/L28-04.mp3",
+    "en": "audio/en/L28-04.mp3"
+  },
+  "L28-05": {
+    "es": "audio/es/L28-05.mp3",
+    "en": "audio/en/L28-05.mp3"
+  },
+  "L28-06": {
+    "es": "audio/es/L28-06.mp3",
+    "en": "audio/en/L28-06.mp3"
+  },
+  "L28-07": {
+    "es": "audio/es/L28-07.mp3",
+    "en": "audio/en/L28-07.mp3"
+  },
+  "L28-08": {
+    "es": "audio/es/L28-08.mp3",
+    "en": "audio/en/L28-08.mp3"
+  },
+  "L28-09": {
+    "es": "audio/es/L28-09.mp3",
+    "en": "audio/en/L28-09.mp3"
+  },
+  "L28-10": {
+    "es": "audio/es/L28-10.mp3",
+    "en": "audio/en/L28-10.mp3"
+  },
+  "L28-DL01": {
+    "es": "audio/es/L28-DL01.mp3"
+  },
+  "L28-DL02": {
+    "es": "audio/es/L28-DL02.mp3"
+  },
+  "L28-DL03": {
+    "es": "audio/es/L28-DL03.mp3"
+  },
+  "L28-DL04": {
+    "es": "audio/es/L28-DL04.mp3"
+  },
+  "L29-01": {
+    "es": "audio/es/L29-01.mp3",
+    "en": "audio/en/L29-01.mp3"
+  },
+  "L29-02": {
+    "es": "audio/es/L29-02.mp3",
+    "en": "audio/en/L29-02.mp3"
+  },
+  "L29-03": {
+    "es": "audio/es/L29-03.mp3",
+    "en": "audio/en/L29-03.mp3"
+  },
+  "L29-04": {
+    "es": "audio/es/L29-04.mp3",
+    "en": "audio/en/L29-04.mp3"
+  },
+  "L29-05": {
+    "es": "audio/es/L29-05.mp3",
+    "en": "audio/en/L29-05.mp3"
+  },
+  "L29-06": {
+    "es": "audio/es/L29-06.mp3",
+    "en": "audio/en/L29-06.mp3"
+  },
+  "L29-07": {
+    "es": "audio/es/L29-07.mp3",
+    "en": "audio/en/L29-07.mp3"
+  },
+  "L29-08": {
+    "es": "audio/es/L29-08.mp3",
+    "en": "audio/en/L29-08.mp3"
+  },
+  "L29-09": {
+    "es": "audio/es/L29-09.mp3",
+    "en": "audio/en/L29-09.mp3"
+  },
+  "L29-10": {
+    "es": "audio/es/L29-10.mp3",
+    "en": "audio/en/L29-10.mp3"
+  },
+  "L29-DL01": {
+    "es": "audio/es/L29-DL01.mp3"
+  },
+  "L29-DL02": {
+    "es": "audio/es/L29-DL02.mp3"
+  },
+  "L29-DL03": {
+    "es": "audio/es/L29-DL03.mp3"
+  },
+  "L29-DL04": {
+    "es": "audio/es/L29-DL04.mp3"
+  },
+  "L30-01": {
+    "es": "audio/es/L30-01.mp3",
+    "en": "audio/en/L30-01.mp3"
+  },
+  "L30-02": {
+    "es": "audio/es/L30-02.mp3",
+    "en": "audio/en/L30-02.mp3"
+  },
+  "L30-03": {
+    "es": "audio/es/L30-03.mp3",
+    "en": "audio/en/L30-03.mp3"
+  },
+  "L30-04": {
+    "es": "audio/es/L30-04.mp3",
+    "en": "audio/en/L30-04.mp3"
+  },
+  "L30-05": {
+    "es": "audio/es/L30-05.mp3",
+    "en": "audio/en/L30-05.mp3"
+  },
+  "L30-06": {
+    "es": "audio/es/L30-06.mp3",
+    "en": "audio/en/L30-06.mp3"
+  },
+  "L30-07": {
+    "es": "audio/es/L30-07.mp3",
+    "en": "audio/en/L30-07.mp3"
+  },
+  "L30-08": {
+    "es": "audio/es/L30-08.mp3",
+    "en": "audio/en/L30-08.mp3"
+  },
+  "L30-09": {
+    "es": "audio/es/L30-09.mp3",
+    "en": "audio/en/L30-09.mp3"
+  },
+  "L30-10": {
+    "es": "audio/es/L30-10.mp3",
+    "en": "audio/en/L30-10.mp3"
+  },
+  "L30-DL01": {
+    "es": "audio/es/L30-DL01.mp3"
+  },
+  "L30-DL02": {
+    "es": "audio/es/L30-DL02.mp3"
+  },
+  "L30-DL03": {
+    "es": "audio/es/L30-DL03.mp3"
+  },
+  "L30-DL04": {
+    "es": "audio/es/L30-DL04.mp3"
   }
 }
