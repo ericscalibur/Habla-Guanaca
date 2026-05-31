@@ -227,7 +227,7 @@ function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,
 function HablaGuanaca() {
   const [screen,setScreen]=useState("home");
   const [selectedLesson,setSelectedLesson]=useState(null);
-  const [completedLessons,setCompletedLessons]=useState({});
+  const [completedLessons,setCompletedLessons]=useState(()=>{try{return JSON.parse(localStorage.getItem("habla-completed")||"{}") }catch(e){return{}}});
   const [sequence,setSequence]=useState([]);
   const [currentIdx,setCurrentIdx]=useState(0);
   const [phase,setPhase]=useState("intro");
@@ -292,7 +292,7 @@ function HablaGuanaca() {
 
   const nextItem=useCallback(()=>{
     if(window.speechSynthesis)window.speechSynthesis.cancel();
-    if(currentIdx+1>=sequence.length){setCompletedLessons(p=>({...p,[selectedLesson.id]:true}));setScreen("complete");}
+    if(currentIdx+1>=sequence.length){setCompletedLessons(p=>{const n={...p,[selectedLesson.id]:true};try{localStorage.setItem("habla-completed",JSON.stringify(n))}catch(e){}return n;});setScreen("complete");}
     else{
       const nextI=currentIdx+1;setCurrentIdx(nextI);setPhase("prompt");
       setTimeout(async()=>{
@@ -340,11 +340,9 @@ function HablaGuanaca() {
             <div className="space-y-2">
               {pack.lessons.map((lesson,idx)=>{
                 const done=completedLessons[lesson.id];
-                const gi=LESSONS.indexOf(lesson);
-                const locked=gi>1&&!completedLessons[LESSONS[gi-1]?.id];
                 return (
-                  <button key={lesson.id} onClick={()=>!locked&&startLesson(lesson)} disabled={locked}
-                    className={`w-full text-left p-4 rounded-xl border transition-all ${locked?"border-gray-800 bg-gray-900/50 opacity-50 cursor-not-allowed":done?"border-emerald-800 bg-emerald-950/30 hover:bg-emerald-950/50":"border-gray-800 bg-gray-900 hover:bg-gray-800 hover:border-gray-700"}`}>
+                  <button key={lesson.id} onClick={()=>startLesson(lesson)}
+                    className={`w-full text-left p-4 rounded-xl border transition-all ${done?"border-emerald-800 bg-emerald-950/30 hover:bg-emerald-950/50":"border-gray-800 bg-gray-900 hover:bg-gray-800 hover:border-gray-700"}`}>
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{lesson.icon}</span>
                       <div className="flex-1">
@@ -354,7 +352,7 @@ function HablaGuanaca() {
                       </div>
                       <div className="text-right">
                         <span className="text-gray-600 text-xs flex items-center gap-1"><IconClock size={10}/> {lesson.estimatedMinutes}m</span>
-                        {!locked&&<IconChevronRight size={16} className="text-gray-600 mt-1 ml-auto"/>}
+                        <IconChevronRight size={16} className="text-gray-600 mt-1 ml-auto"/>
                       </div>
                     </div>
                   </button>
