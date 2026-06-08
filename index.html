@@ -82,9 +82,11 @@ const LESSONS = getAllLessons();
 // ============================================================
 // GIR SCHEDULING
 // ============================================================
-function buildLessonSequence(newItems) {
+function buildLessonSequence(newItems, priorReviews = []) {
   const sequence = [], reviewQueue = [], intervals = [2,4,8,15];
   let position = 0;
+  const priorCopy = [...priorReviews];
+  const priorInsertAt = [2, 6]; // insert carry-over items after 3rd and 7th new items
   for (let i = 0; i < newItems.length; i++) {
     while (reviewQueue.length > 0 && reviewQueue[0].nextAt <= position) {
       const review = reviewQueue.shift();
@@ -96,10 +98,17 @@ function buildLessonSequence(newItems) {
       }
       position++;
     }
+    if (priorInsertAt.includes(i) && priorCopy.length > 0) {
+      sequence.push({...priorCopy.shift(), type:"priorReview"});
+      position++;
+    }
     sequence.push({...newItems[i], type:"new"});
     position++;
     reviewQueue.push({item:newItems[i], interval:intervals[0], nextAt:position+intervals[0], reviewNum:1});
     reviewQueue.sort((a,b)=>a.nextAt-b.nextAt);
+  }
+  while (priorCopy.length > 0) {
+    sequence.push({...priorCopy.shift(), type:"priorReview"});
   }
   let extra=0;
   while (reviewQueue.length>0 && extra<10) {
@@ -268,7 +277,7 @@ function HablaGuanaca() {
   },[ttsEnabled,selectedEnglishVoice,speechRate]);
 
   const startLesson=useCallback(lesson=>{
-    setSelectedLesson(lesson);setSequence(buildLessonSequence(lesson.newItems));setCurrentIdx(0);setPhase("intro");setScreen("lesson");
+    setSelectedLesson(lesson);setSequence(buildLessonSequence(lesson.newItems, lesson.priorReview||[]));setCurrentIdx(0);setPhase("intro");setScreen("lesson");
   },[]);
 
   const goToPrompt=useCallback(async()=>{
@@ -401,7 +410,8 @@ function HablaGuanaca() {
         )}
         {phase==="prompt"&&currentItem&&(
           <div className="w-full max-w-md text-center">
-            {currentItem.type==="review"?<span className="inline-block px-2 py-0.5 bg-amber-900/30 border border-amber-800/50 text-amber-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Review</span>
+            {currentItem.type==="priorReview"?<span className="inline-block px-2 py-0.5 bg-purple-900/30 border border-purple-800/50 text-purple-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Last lesson</span>
+            :currentItem.type==="review"?<span className="inline-block px-2 py-0.5 bg-amber-900/30 border border-amber-800/50 text-amber-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Review</span>
             :<span className="inline-block px-2 py-0.5 bg-blue-900/30 border border-blue-800/50 text-blue-400 text-xs rounded-full mb-4"><IconStar size={10} className="inline mr-1"/>New</span>}
             <p className="text-gray-400 text-sm mb-2">How do you say:</p>
             <h2 className="text-3xl font-bold text-white mb-6">{currentItem.promptEn}</h2>
