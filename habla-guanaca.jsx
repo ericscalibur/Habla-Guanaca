@@ -305,8 +305,19 @@ export default function HablaGuanaca() {
 
   // Timer
   const [timer, setTimer] = useState(0);
+  const [isHolding, setIsHolding] = useState(false);
+  const isHoldingRef = useRef(false);
   const timerRef = useRef(null);
   const isMountedRef = useRef(true);
+
+  const holdTimer = useCallback(() => {
+    isHoldingRef.current = true;
+    setIsHolding(true);
+  }, []);
+  const releaseTimer = useCallback(() => {
+    isHoldingRef.current = false;
+    setIsHolding(false);
+  }, []);
 
   useEffect(() => {
     // Load voices — browsers load them async
@@ -364,6 +375,8 @@ export default function HablaGuanaca() {
     if (phase === "anticipate" && !isPaused) {
       setTimer(pauseDuration);
       timerRef.current = setInterval(() => {
+        // Press-and-hold freezes the countdown; release resumes from here
+        if (isHoldingRef.current) return;
         setTimer((t) => {
           if (t <= 1) {
             clearInterval(timerRef.current);
@@ -376,6 +389,8 @@ export default function HablaGuanaca() {
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      isHoldingRef.current = false;
+      setIsHolding(false);
     };
   }, [phase, isPaused, pauseDuration]);
 
@@ -556,7 +571,21 @@ export default function HablaGuanaca() {
         </div>
 
         {/* Content area */}
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
+        <div
+          className="flex-1 flex flex-col items-center justify-center p-6"
+          {...(phase === "anticipate"
+            ? {
+                onMouseDown: holdTimer,
+                onMouseUp: releaseTimer,
+                onMouseLeave: releaseTimer,
+                onTouchStart: holdTimer,
+                onTouchEnd: releaseTimer,
+                onTouchCancel: releaseTimer,
+                onContextMenu: (e) => e.preventDefault(),
+                style: { touchAction: "none" },
+              }
+            : {})}
+        >
           {/* INTRO PHASE */}
           {phase === "intro" && selectedLesson?.dialogue && (
             <div className="w-full max-w-md">
@@ -623,14 +652,14 @@ export default function HablaGuanaca() {
             <div className="w-full max-w-md text-center">
               <p className="text-gray-500 text-xs mb-4 uppercase tracking-wider">Think or say it aloud...</p>
               <h2 className="text-3xl font-bold text-white mb-8">{currentItem.promptEn}</h2>
-              {/* Timer ring */}
-              <div className="relative w-24 h-24 mx-auto mb-6">
+              {/* Timer ring — tap & hold anywhere on screen to pause, release to resume */}
+              <div className="relative w-24 h-24 mx-auto mb-2 select-none pointer-events-none">
                 <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" r="42" fill="none" stroke="#1f2937" strokeWidth="6" />
                   <circle
                     cx="50" cy="50" r="42"
                     fill="none"
-                    stroke="#3b82f6"
+                    stroke={isHolding ? "#f59e0b" : "#3b82f6"}
                     strokeWidth="6"
                     strokeLinecap="round"
                     strokeDasharray={264}
@@ -638,12 +667,17 @@ export default function HablaGuanaca() {
                     className="transition-all duration-1000"
                   />
                 </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-blue-400">
+                <span className={`absolute inset-0 flex items-center justify-center text-2xl font-bold ${isHolding ? "text-amber-400" : "text-blue-400"}`}>
                   {timer}
                 </span>
               </div>
+              <p className={`text-[11px] mb-4 h-4 select-none pointer-events-none transition-colors ${isHolding ? "text-amber-400" : "text-gray-600"}`}>
+                {isHolding ? "⏸ Paused — release to resume" : "Tap & hold anywhere to pause"}
+              </p>
               <button
                 onClick={skipToReveal}
+                onMouseDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 className="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm text-gray-400 transition-colors flex items-center gap-2 mx-auto"
               >
                 <SkipForward size={14} /> Show answer
