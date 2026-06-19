@@ -310,7 +310,10 @@ export default function HablaGuanaca() {
   const timerRef = useRef(null);
   const isMountedRef = useRef(true);
 
-  const holdTimer = useCallback(() => {
+  const holdTimer = useCallback((e) => {
+    // Capture the pointer so we always get the matching release event,
+    // even if the finger drifts off this element while held.
+    try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch {}
     isHoldingRef.current = true;
     setIsHolding(true);
   }, []);
@@ -575,12 +578,12 @@ export default function HablaGuanaca() {
           className="flex-1 flex flex-col items-center justify-center p-6"
           {...(phase === "anticipate"
             ? {
-                onMouseDown: holdTimer,
-                onMouseUp: releaseTimer,
-                onMouseLeave: releaseTimer,
-                onTouchStart: holdTimer,
-                onTouchEnd: releaseTimer,
-                onTouchCancel: releaseTimer,
+                // Pointer events unify mouse + touch into one stream, so the
+                // browser's legacy compatibility mouse-events (fired ~300ms
+                // after a touch) can't spuriously trigger a release mid-hold.
+                onPointerDown: holdTimer,
+                onPointerUp: releaseTimer,
+                onPointerCancel: releaseTimer,
                 onContextMenu: (e) => e.preventDefault(),
                 style: { touchAction: "none" },
               }
@@ -676,8 +679,7 @@ export default function HablaGuanaca() {
               </p>
               <button
                 onClick={skipToReveal}
-                onMouseDown={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
                 className="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm text-gray-400 transition-colors flex items-center gap-2 mx-auto"
               >
                 <SkipForward size={14} /> Show answer
