@@ -255,7 +255,7 @@ function HablaGuanaca() {
   const isHoldingRef=useRef(false);
   const timerRef=useRef(null);
   const isMountedRef=useRef(true);
-  const holdTimer=useCallback((e)=>{try{e.currentTarget.setPointerCapture?.(e.pointerId);}catch{}isHoldingRef.current=true;setIsHolding(true);},[]);
+  const holdTimer=useCallback((e)=>{try{e.preventDefault();e.currentTarget.setPointerCapture?.(e.pointerId);}catch{}isHoldingRef.current=true;setIsHolding(true);},[]);
   const releaseTimer=useCallback(()=>{isHoldingRef.current=false;setIsHolding(false);},[]);
 
   useEffect(()=>{
@@ -394,7 +394,7 @@ function HablaGuanaca() {
         </div>
         <button onClick={()=>setShowSettings(true)} className="p-1.5 text-gray-500 hover:text-gray-300"><IconSettings size={16}/></button>
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center p-6" {...(phase==="anticipate"?{onPointerDown:holdTimer,onPointerUp:releaseTimer,onPointerCancel:releaseTimer,onContextMenu:e=>e.preventDefault(),style:{touchAction:"none"}}:{})}>
+      <div className="flex-1 flex flex-col items-center justify-center p-6" {...(phase==="anticipate"?{onPointerDown:holdTimer,onPointerUp:releaseTimer,onPointerCancel:releaseTimer,onContextMenu:e=>e.preventDefault(),style:{touchAction:"none",userSelect:"none",WebkitUserSelect:"none",WebkitTouchCallout:"none"}}:{})}>
         {phase==="intro"&&selectedLesson?.dialogue&&(
           <div className="w-full max-w-md">
             <div className="text-center mb-6"><span className="text-4xl mb-3 block">{selectedLesson.icon}</span><h2 className="text-xl font-bold">{selectedLesson.title}</h2><p className="text-gray-400 text-sm mt-1">{selectedLesson.subtitle}</p></div>

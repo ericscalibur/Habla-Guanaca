@@ -311,9 +311,14 @@ export default function HablaGuanaca() {
   const isMountedRef = useRef(true);
 
   const holdTimer = useCallback((e) => {
-    // Capture the pointer so we always get the matching release event,
+    // preventDefault suppresses iOS's native long-press (selection/callout)
+    // which would otherwise fire pointercancel and resume mid-hold.
+    // Capturing the pointer guarantees we get the matching release event
     // even if the finger drifts off this element while held.
-    try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch {}
+    try {
+      e.preventDefault();
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } catch {}
     isHoldingRef.current = true;
     setIsHolding(true);
   }, []);
@@ -585,7 +590,12 @@ export default function HablaGuanaca() {
                 onPointerUp: releaseTimer,
                 onPointerCancel: releaseTimer,
                 onContextMenu: (e) => e.preventDefault(),
-                style: { touchAction: "none" },
+                style: {
+                  touchAction: "none",
+                  userSelect: "none",
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
+                },
               }
             : {})}
         >
