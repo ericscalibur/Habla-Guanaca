@@ -125,7 +125,7 @@ function buildLessonSequence(newItems, priorReviews = []) {
 function getSpanishVoices() {
   if (!window.speechSynthesis) return [];
   return window.speechSynthesis.getVoices().filter(v=>v.lang.startsWith("es")).sort((a,b)=>{
-    const sc=v=>{let s=0;const n=v.name.toLowerCase();if(n.includes("google"))s+=10;if(n.includes("neural")||n.includes("natural"))s+=10;if(n.includes("premium"))s+=8;if(n.includes("enhanced"))s+=5;if(n.includes("compact"))s-=10;if(v.lang==="es-419"||v.lang==="es-MX")s+=3;if(v.lang==="es-US")s+=2;return s;};
+    const sc=v=>{let s=0;const n=v.name.toLowerCase();if(n.includes("google"))s+=10;if(n.includes("neural")||n.includes("natural"))s+=10;if(n.includes("premium"))s+=8;if(n.includes("enhanced"))s+=5;if(n.includes("compact"))s-=10;if(v.lang==="es-ES")s-=20;if(v.lang==="es-SV")s+=6;if(v.lang==="es-419"||v.lang==="es-MX")s+=4;if(v.lang==="es-US")s+=3;if(v.lang!=="es-ES"&&v.lang!=="es")s+=2;return s;};
     return sc(b)-sc(a);
   });
 }

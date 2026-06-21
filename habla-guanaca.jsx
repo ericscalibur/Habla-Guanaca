@@ -228,9 +228,13 @@ function getSpanishVoices() {
       if (name.includes("premium")) s += 8;
       if (name.includes("enhanced")) s += 5;
       if (name.includes("compact")) s -= 10;
-      // Prefer Latin American locales
-      if (v.lang === "es-419" || v.lang === "es-MX") s += 3;
-      if (v.lang === "es-US") s += 2;
+      // Strongly avoid Castilian (es-ES) — the "Barcelona lisp" on c/z —
+      // and prefer Latin American locales, Salvadoran first.
+      if (v.lang === "es-ES") s -= 20;
+      if (v.lang === "es-SV") s += 6;
+      if (v.lang === "es-419" || v.lang === "es-MX") s += 4;
+      if (v.lang === "es-US") s += 3;
+      if (v.lang !== "es-ES" && v.lang !== "es") s += 2;
       return s;
     };
     return scoreVoice(b) - scoreVoice(a);
