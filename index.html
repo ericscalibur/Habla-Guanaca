@@ -93,7 +93,9 @@ function buildLessonSequence(newItems, priorReviews = []) {
       const review = reviewQueue.shift();
       sequence.push({...review.item, type:"review", reviewNum:review.reviewNum});
       const nextIdx = intervals.indexOf(review.interval);
-      if (nextIdx < intervals.length-1) {
+      // Optional per-item cap: maxReviews limits how many times a word resurfaces.
+      const cap = (review.item.maxReviews === undefined) ? intervals.length : review.item.maxReviews;
+      if (review.reviewNum < cap && nextIdx < intervals.length-1) {
         reviewQueue.push({item:review.item, interval:intervals[nextIdx+1], nextAt:position+intervals[nextIdx+1], reviewNum:review.reviewNum+1});
         reviewQueue.sort((a,b)=>a.nextAt-b.nextAt);
       }
@@ -105,8 +107,10 @@ function buildLessonSequence(newItems, priorReviews = []) {
     }
     sequence.push({...newItems[i], type:"new"});
     position++;
-    reviewQueue.push({item:newItems[i], interval:intervals[0], nextAt:position+intervals[0], reviewNum:1});
-    reviewQueue.sort((a,b)=>a.nextAt-b.nextAt);
+    if (newItems[i].maxReviews === undefined || newItems[i].maxReviews >= 1) {
+      reviewQueue.push({item:newItems[i], interval:intervals[0], nextAt:position+intervals[0], reviewNum:1});
+      reviewQueue.sort((a,b)=>a.nextAt-b.nextAt);
+    }
   }
   while (priorCopy.length > 0) {
     sequence.push({...priorCopy.shift(), type:"priorReview"});
@@ -415,7 +419,7 @@ function HablaGuanaca() {
         )}
         {phase==="prompt"&&currentItem&&(
           <div className="w-full max-w-md text-center">
-            {currentItem.type==="priorReview"?<span className="inline-block px-2 py-0.5 bg-purple-900/30 border border-purple-800/50 text-purple-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Last lesson</span>
+            {(currentItem.type==="priorReview"||currentItem.callback)?<span className="inline-block px-2 py-0.5 bg-purple-900/30 border border-purple-800/50 text-purple-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Previous lesson</span>
             :currentItem.type==="review"?<span className="inline-block px-2 py-0.5 bg-amber-900/30 border border-amber-800/50 text-amber-400 text-xs rounded-full mb-4"><IconRotate size={10} className="inline mr-1"/>Review</span>
             :<span className="inline-block px-2 py-0.5 bg-blue-900/30 border border-blue-800/50 text-blue-400 text-xs rounded-full mb-4"><IconStar size={10} className="inline mr-1"/>New</span>}
             <p className="text-gray-400 text-sm mb-2">How do you say:</p>
