@@ -15,6 +15,8 @@
   body { margin:0; background:#030712; overflow-x:hidden; }
   ::-webkit-scrollbar { display:none; }
   * { -ms-overflow-style:none; scrollbar-width:none; }
+  /* Countdown ring depletes smoothly over the full thinking time */
+  @keyframes sgRingDeplete { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 264; } }
 </style>
 </head>
 <body>
@@ -25,6 +27,9 @@
 <script src="packs/02-coqueteo.js"></script>
 <script src="packs/03-chismoseando.js"></script>
 <script src="packs/04-dominio.js"></script>
+
+<!-- See-Guess mode content (images + spoken-answer vocab) -->
+<script src="packs/seeguess-content.js"></script>
 
 <script type="text/babel">
 // ============================================================
@@ -60,6 +65,11 @@ const IconStar = ({size,className}) => (
 const IconClock = ({size,className}) => (
   <svg width={size||18} height={size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+const IconMic = ({size,className}) => (
+  <svg width={size||18} height={size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
   </svg>
 );
 
@@ -172,6 +182,61 @@ function playBundledAudio(itemId, lang) {
 }
 
 // ============================================================
+// SEE-GUESS HELPERS — speech recognition + answer matching
+// ============================================================
+const SpeechRecognitionImpl = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+const SEEGUESS_SUPPORTED = !!SpeechRecognitionImpl;
+const SEEGUESS_LEVELS = window.HABLA_SEEGUESS || [];
+
+// Normalize for comparison: lowercase, strip accents/diacritics & punctuation, collapse spaces.
+function sgNormalize(s) {
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+// Does a (normalized) transcript contain the (normalized) answer as a whole-word run?
+function sgPhraseMatch(transcript, answer) {
+  if (!answer) return false;
+  if (transcript === answer) return true;
+  return (" " + transcript + " ").indexOf(" " + answer + " ") !== -1;
+}
+// Check a recognition event's alternatives against an item's accepted answers.
+function sgEventMatches(event, acceptNorm) {
+  for (let i = event.resultIndex; i < event.results.length; i++) {
+    const res = event.results[i];
+    for (let a = 0; a < res.length; a++) {
+      const t = sgNormalize(res[a].transcript);
+      for (let k = 0; k < acceptNorm.length; k++) {
+        if (sgPhraseMatch(t, acceptNorm[k])) return true;
+      }
+    }
+  }
+  return false;
+}
+
+// Short success chime via WebAudio (no asset needed).
+let _sgAudioCtx = null;
+function sgChime() {
+  try {
+    _sgAudioCtx = _sgAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = _sgAudioCtx, now = ctx.currentTime;
+    [880, 1320].forEach((freq, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = freq;
+      o.connect(g); g.connect(ctx.destination);
+      const t = now + i * 0.09;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+      o.start(t); o.stop(t + 0.2);
+    });
+  } catch (e) {}
+}
+
+// ============================================================
 // SETTINGS MODAL
 // ============================================================
 function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice,onClose}) {
@@ -236,6 +301,262 @@ function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,
 }
 
 // ============================================================
+// SEE-GUESS MODE — "see the image, say the word"
+// ============================================================
+
+// Browser-doesn't-support / mic-denied gate screen.
+function SeeGuessGate({title, message, onExit}) {
+  return (
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col max-w-lg mx-auto">
+      <div className="p-3"><button onClick={onExit} className="p-1.5 text-gray-500 hover:text-gray-300"><IconChevronLeft size={20}/></button></div>
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+        <div className="text-5xl mb-4">🎤</div>
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-400 text-sm max-w-xs mb-6">{message}</p>
+        <button onClick={onExit} className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-sm text-gray-300">Back</button>
+      </div>
+    </div>
+  );
+}
+
+// Lesson picker for See-Guess.
+function SeeGuessHome({onPlay, onExit}) {
+  if (!SEEGUESS_SUPPORTED) {
+    return <SeeGuessGate onExit={onExit} title="Mic mode needs a different browser"
+      message="See & Say listens to you, which needs the Web Speech API. Open this in Chrome or Safari (desktop or mobile) to play."/>;
+  }
+  return (
+    <div className="min-h-screen bg-gray-950 text-white p-4 max-w-lg mx-auto">
+      <div className="flex items-center gap-3 mb-6 pt-2">
+        <button onClick={onExit} className="p-1.5 text-gray-500 hover:text-gray-300"><IconChevronLeft size={20}/></button>
+        <div>
+          <h1 className="text-xl font-bold flex items-center gap-2"><IconMic size={18} className="text-rose-400"/> See &amp; Say</h1>
+          <p className="text-gray-500 text-xs">Look at the picture, say the word out loud. The app listens.</p>
+        </div>
+      </div>
+      <div className="space-y-5">
+        {SEEGUESS_LEVELS.map(level => (
+          <div key={level.id}>
+            <div className="flex items-center gap-2 mb-2 px-1">
+              <span className="text-lg">{level.icon}</span>
+              <h2 className="text-sm font-semibold text-gray-300">{level.name}</h2>
+              <span className="text-xs text-gray-600">{level.subtitle}</span>
+            </div>
+            <div className="space-y-2">
+              {level.lessons.map(lesson => (
+                <button key={lesson.id} onClick={()=>onPlay(level, lesson)}
+                  className="w-full text-left p-4 rounded-xl border border-gray-800 bg-gray-900 hover:bg-gray-800 hover:border-gray-700 transition-all flex items-center gap-3">
+                  <span className="text-xl">🖼️</span>
+                  <div className="flex-1">
+                    <span className="font-semibold text-sm">{lesson.title}</span>
+                    <p className="text-gray-500 text-xs">{lesson.items.length} images</p>
+                  </div>
+                  <IconChevronRight size={16} className="text-gray-600"/>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 p-3 bg-rose-950/20 border border-rose-900/40 rounded-lg">
+        <p className="text-xs text-rose-300 leading-relaxed">🎙️ You'll get 10 seconds per image. Say the word with decent pronunciation and it advances automatically. Miss it and the answer flashes for 3 seconds.</p>
+      </div>
+    </div>
+  );
+}
+
+// Helper: given the current level+lesson, what comes next?
+function sgFindNext(level, lesson) {
+  const lvIdx = SEEGUESS_LEVELS.findIndex(l => l.id === level.id);
+  if (lvIdx < 0) return null;
+  const lsIdx = SEEGUESS_LEVELS[lvIdx].lessons.findIndex(l => l.id === lesson.id);
+  // next lesson in same level
+  if (lsIdx + 1 < SEEGUESS_LEVELS[lvIdx].lessons.length) {
+    return {level: SEEGUESS_LEVELS[lvIdx], lesson: SEEGUESS_LEVELS[lvIdx].lessons[lsIdx + 1], isNextLevel: false};
+  }
+  // first lesson of next level
+  if (lvIdx + 1 < SEEGUESS_LEVELS.length && SEEGUESS_LEVELS[lvIdx + 1].lessons.length > 0) {
+    return {level: SEEGUESS_LEVELS[lvIdx + 1], lesson: SEEGUESS_LEVELS[lvIdx + 1].lessons[0], isNextLevel: true};
+  }
+  return null;
+}
+
+const SG_LIMIT_MS = 10000;   // time allowed per image
+const SG_REVEAL_MS = 3000;   // how long the answer shows on a miss
+const SG_CORRECT_MS = 750;   // celebrate-then-advance on a hit
+const SG_IMG_EXTS = ["png","jpg","jpeg","webp","avif"];  // tried in order until one loads
+
+function SeeGuessRound({level, lesson, recogLang, onExit, onPlay}) {
+  const items = lesson.items;
+  const [idx, setIdx] = useState(0);
+  const [phase, setPhase] = useState("listening"); // listening | correct | reveal | done
+  const [remaining, setRemaining] = useState(10);
+  const [heard, setHeard] = useState("");
+  const [micDenied, setMicDenied] = useState(false);
+  const [imgBroken, setImgBroken] = useState(false);
+  const [extIdx, setExtIdx] = useState(0);
+  const [elapsedMs, setElapsedMs] = useState(0);
+
+  const resultsRef = useRef([]);
+  const roundStartRef = useRef(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false; }; }, []);
+
+  // Reset image state whenever the image changes.
+  useEffect(() => { setImgBroken(false); setExtIdx(0); setHeard(""); }, [idx]);
+
+  // Core listening loop for the current image.
+  useEffect(() => {
+    if (phase !== "listening") return;
+    if (roundStartRef.current == null) roundStartRef.current = Date.now();
+    const item = items[idx];
+    const acceptNorm = item.accept.map(sgNormalize);
+    const itemStart = Date.now();
+    const deadline = itemStart + SG_LIMIT_MS;
+    let stopped = false, done = false;
+
+    setRemaining(10);
+    const tick = setInterval(() => {
+      const left = deadline - Date.now();
+      if (mountedRef.current) setRemaining(Math.max(0, Math.ceil(left / 1000)));
+      if (left <= 0) finish(false, SG_LIMIT_MS);
+    }, 100);
+
+    const recog = new SpeechRecognitionImpl();
+    recog.lang = recogLang || "es-US";
+    recog.continuous = true;
+    recog.interimResults = true;
+    recog.maxAlternatives = 6;
+    recog.onresult = (e) => {
+      // show what we last heard (interim feedback)
+      const last = e.results[e.results.length - 1];
+      if (last && last[0] && mountedRef.current) setHeard(last[0].transcript);
+      if (sgEventMatches(e, acceptNorm)) finish(true, Date.now() - itemStart);
+    };
+    recog.onerror = (e) => {
+      if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+        stopped = true;
+        if (mountedRef.current) setMicDenied(true);
+      }
+    };
+    recog.onend = () => { if (!stopped && !done) { try { recog.start(); } catch (err) {} } };
+    try { recog.start(); } catch (err) {}
+
+    function finish(correct, ms) {
+      if (done) return;
+      done = true; stopped = true;
+      clearInterval(tick);
+      try { recog.abort(); } catch (err) {}
+      resultsRef.current[idx] = {correct, ms};
+      if (!mountedRef.current) return;
+      if (correct) { sgChime(); setPhase("correct"); }
+      else setPhase("reveal");
+    }
+
+    return () => { stopped = true; done = true; clearInterval(tick); try { recog.abort(); } catch (err) {} };
+  }, [phase, idx, items, recogLang]);
+
+  // Advance after the correct-flash or the reveal.
+  useEffect(() => {
+    if (phase !== "correct" && phase !== "reveal") return;
+    const delay = phase === "correct" ? SG_CORRECT_MS : SG_REVEAL_MS;
+    const t = setTimeout(() => {
+      if (!mountedRef.current) return;
+      if (idx + 1 >= items.length) {
+        setElapsedMs(Date.now() - (roundStartRef.current || Date.now()));
+        setPhase("done");
+      } else {
+        setIdx(idx + 1);
+        setPhase("listening");
+      }
+    }, delay);
+    return () => clearTimeout(t);
+  }, [phase, idx, items]);
+
+  if (micDenied) {
+    return <SeeGuessGate onExit={onExit} title="Microphone blocked"
+      message="See & Say can't hear you without mic access. Allow the microphone for this site in your browser settings, then come back."/>;
+  }
+
+  // RESULTS
+  if (phase === "done") {
+    const results = resultsRef.current;
+    const right = results.filter(r => r && r.correct).length;
+    const wrong = items.length - right;
+    const secs = Math.round(elapsedMs / 1000);
+    const next = sgFindNext(level, lesson);
+    return (
+      <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center p-6 max-w-lg mx-auto">
+        <div className="text-center w-full max-w-xs">
+          <div className="text-6xl mb-3">{right === items.length ? "🏆" : right >= items.length * 0.7 ? "🎉" : "💪"}</div>
+          <h2 className="text-2xl font-bold mb-1">{lesson.title}</h2>
+          <p className="text-gray-400 text-sm mb-6">{level.name} · {level.subtitle}</p>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-gray-900 rounded-xl p-3 border border-gray-800"><p className="text-2xl font-bold text-emerald-400">{right}</p><p className="text-xs text-gray-500">Right</p></div>
+            <div className="bg-gray-900 rounded-xl p-3 border border-gray-800"><p className="text-2xl font-bold text-rose-400">{wrong}</p><p className="text-xs text-gray-500">Wrong</p></div>
+            <div className="bg-gray-900 rounded-xl p-3 border border-gray-800"><p className="text-2xl font-bold text-blue-400">{secs}s</p><p className="text-xs text-gray-500">Total</p></div>
+          </div>
+          <div className="space-y-3">
+            <button onClick={()=>onPlay(level, lesson)} className="w-full py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"><IconRotate size={16}/> Repeat lesson</button>
+            {next && <button onClick={()=>onPlay(next.level, next.lesson)} className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">{next.isNextLevel ? "Next level" : "Next lesson"}: {next.lesson.title} <IconChevronRight size={16}/></button>}
+            <button onClick={onExit} className="w-full py-2 text-gray-500 hover:text-gray-300 text-sm transition-colors">Back to menu</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ROUND (listening / correct / reveal)
+  const item = items[idx];
+  const progress = ((idx + (phase === "listening" ? 0 : 1)) / items.length) * 100;
+  return (
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col max-w-lg mx-auto">
+      <div className="p-3 flex items-center gap-3">
+        <button onClick={onExit} className="p-1.5 text-gray-500 hover:text-gray-300"><IconChevronLeft size={20}/></button>
+        <div className="flex-1">
+          <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-rose-500 to-amber-500 rounded-full transition-all duration-300" style={{width:`${progress}%`}}/></div>
+          <div className="flex justify-between mt-1"><span className="text-xs text-gray-500">{lesson.title}</span><span className="text-xs text-gray-500">{idx+1}/{items.length}</span></div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center p-6">
+        {/* Image + word-on-miss overlay */}
+        <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden bg-gray-900 border border-gray-800 flex items-center justify-center mb-6">
+          {imgBroken
+            ? <div className="text-center text-gray-600 p-6"><div className="text-5xl mb-2">🖼️</div><p className="text-xs">image missing</p></div>
+            : <img src={item.image.replace(/\.(png|jpe?g|webp)$/i,"") + "." + SG_IMG_EXTS[extIdx]} alt="" onError={()=>{ if (extIdx < SG_IMG_EXTS.length-1) setExtIdx(extIdx+1); else setImgBroken(true); }} className="w-full h-full object-cover" draggable={false}/>}
+          {phase === "correct" && (
+            <div className="absolute inset-0 bg-emerald-600/85 flex items-center justify-center">
+              <div className="text-center"><IconCheck size={56} className="text-white mx-auto mb-1"/><p className="text-2xl font-bold text-white">{item.answer}</p></div>
+            </div>
+          )}
+          {phase === "reveal" && (
+            <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
+              <p className="text-gray-400 text-xs mb-1 uppercase tracking-wider">Time's up</p>
+              <p className="text-3xl font-bold text-amber-400 px-4 text-center">{item.answer}</p>
+            </div>
+          )}
+        </div>
+
+        {phase === "listening" && (
+          <div className="text-center w-full max-w-sm">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span></span>
+              <span className="text-rose-300 text-sm font-medium">Listening… say what you see</span>
+            </div>
+            <p className="text-4xl font-bold font-mono mb-2" style={{color: remaining <= 3 ? "#f59e0b" : "#9ca3af"}}>{remaining}</p>
+            <p className="text-gray-600 text-xs h-4 italic">{heard ? "“" + heard + "”" : " "}</p>
+            <button onClick={()=>{ resultsRef.current[idx] = {correct:false, ms:SG_LIMIT_MS}; setPhase("reveal"); }}
+              className="mt-4 px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm text-gray-400 transition-colors flex items-center gap-2 mx-auto"><IconSkipFwd size={14}/> Skip</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
 // MAIN APP
 // ============================================================
 function HablaGuanaca() {
@@ -256,6 +577,9 @@ function HablaGuanaca() {
   const [selectedSpanishVoice,setSelectedSpanishVoice]=useState(null);
   const [selectedEnglishVoice,setSelectedEnglishVoice]=useState(null);
   const [timer,setTimer]=useState(0);
+  const [sgLevel,setSgLevel]=useState(null);
+  const [sgLesson,setSgLesson]=useState(null);
+  const [sgPlayCount,setSgPlayCount]=useState(0);
   const [isHolding,setIsHolding]=useState(false);
   const isHoldingRef=useRef(false);
   const timerRef=useRef(null);
@@ -287,6 +611,11 @@ function HablaGuanaca() {
 
   const startLesson=useCallback(lesson=>{
     setSelectedLesson(lesson);setSequence(buildLessonSequence(lesson.newItems, lesson.priorReview||[]));setCurrentIdx(0);setPhase("intro");setScreen("lesson");
+  },[]);
+
+  const playSeeGuess=useCallback((level,lesson)=>{
+    if(window.speechSynthesis)window.speechSynthesis.cancel();
+    setSgLevel(level);setSgLesson(lesson);setSgPlayCount(c=>c+1);setScreen("sgRound");
   },[]);
 
   const goToPrompt=useCallback(async()=>{
@@ -332,6 +661,16 @@ function HablaGuanaca() {
   const progress=sequence.length>0?((currentIdx+1)/sequence.length)*100:0;
 
   const settingsProps={pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice};
+  const sgRecogLang=(selectedSpanishVoice&&/^es-/.test(selectedSpanishVoice.lang))?selectedSpanishVoice.lang:"es-US";
+
+  // SEE-GUESS LESSON PICKER
+  if(screen==="sgHome") return <SeeGuessHome onPlay={playSeeGuess} onExit={()=>setScreen("home")}/>;
+
+  // SEE-GUESS ROUND
+  if(screen==="sgRound"&&sgLesson) return (
+    <SeeGuessRound key={sgLesson.id+"-"+sgPlayCount} level={sgLevel} lesson={sgLesson} recogLang={sgRecogLang}
+      onPlay={playSeeGuess} onExit={()=>setScreen("sgHome")}/>
+  );
 
   // HOME
   if(screen==="home") return (
@@ -346,6 +685,14 @@ function HablaGuanaca() {
         </div>
       </div>
       <button onClick={()=>setShowSettings(true)} className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-300"><IconSettings size={20}/></button>
+      <button onClick={()=>setScreen("sgHome")} className="w-full mb-5 p-4 rounded-xl border border-rose-800/60 bg-gradient-to-r from-rose-950/40 to-amber-950/30 hover:from-rose-950/60 hover:to-amber-950/50 transition-all flex items-center gap-3 text-left">
+        <span className="text-2xl">🎤</span>
+        <div className="flex-1">
+          <div className="flex items-center gap-2"><span className="font-semibold text-sm text-rose-200">See &amp; Say</span><span className="text-[10px] px-1.5 py-0.5 bg-rose-900/50 text-rose-300 rounded-full">beta</span></div>
+          <p className="text-gray-400 text-xs">See a picture, say the word — the app listens until you nail it.</p>
+        </div>
+        <IconChevronRight size={16} className="text-rose-400/70"/>
+      </button>
       <div className="space-y-3">
         {getLoadedPacks().map(pack=>(
           <div key={pack.id} className="mb-5">
@@ -434,7 +781,7 @@ function HablaGuanaca() {
             <div className="relative w-24 h-24 mx-auto mb-2 select-none pointer-events-none">
               <svg className="w-24 h-24" style={{transform:"rotate(-90deg)"}} viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="42" fill="none" stroke="#1f2937" strokeWidth="6"/>
-                <circle cx="50" cy="50" r="42" fill="none" stroke={isHolding?"#f59e0b":"#3b82f6"} strokeWidth="6" strokeLinecap="round" strokeDasharray={264} strokeDashoffset={264-(264*timer)/pauseDuration} style={{transition:"stroke-dashoffset 1s linear"}}/>
+                <circle cx="50" cy="50" r="42" fill="none" stroke={isHolding?"#f59e0b":"#3b82f6"} strokeWidth="6" strokeLinecap="round" strokeDasharray={264} strokeDashoffset={0} style={{animation:`sgRingDeplete ${pauseDuration}s linear forwards`, animationPlayState: isHolding?"paused":"running"}}/>
               </svg>
               <span className={"absolute inset-0 flex items-center justify-center text-2xl font-bold "+(isHolding?"text-amber-400":"text-blue-400")}>{timer}</span>
             </div>
@@ -478,9 +825,9 @@ function HablaGuanaca() {
               <div><p className="text-2xl font-bold text-amber-400">{totalReviews}</p><p className="text-xs text-gray-500">Reviews</p></div>
             </div>
           </div>
-          <div className="space-y-3 w-full max-w-xs mx-auto">
+          <div className="space-y-3 w-full max-w-sm mx-auto">
             <button onClick={()=>startLesson(selectedLesson)} className="w-full py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"><IconRotate size={16}/> Practice Again</button>
-            {nextLesson&&<button onClick={()=>startLesson(nextLesson)} className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">Next: {nextLesson.title} <IconChevronRight size={16}/></button>}
+            {nextLesson&&<button onClick={()=>startLesson(nextLesson)} className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm leading-snug"><span className="min-w-0">Next: {nextLesson.title}</span><IconChevronRight size={16} className="shrink-0"/></button>}
             <button onClick={()=>setScreen("home")} className="w-full py-2 text-gray-500 hover:text-gray-300 text-sm transition-colors">Back to lessons</button>
           </div>
         </div>
