@@ -52,6 +52,8 @@
     ["elefante", "elefante", "elephant"],
     ["mono", "mono", "monkey"],
     ["serpiente", "serpiente", "snake", ["culebra", "vibora"]],
+    ["murcielago", "murciélago", "bat"],
+    ["ardilla", "ardilla", "squirrel"],
   ];
 
   const L1L2 = [ // Comida y bebida
@@ -87,7 +89,8 @@
     ["lampara", "lámpara", "lamp"],
     ["reloj", "reloj", "clock"],
     ["llave", "llave", "key"],
-    ["telefono", "teléfono", "phone", ["celular"]],
+    ["telefono", "teléfono", "landline phone"],
+    ["celular", "celular", "cell phone / mobile", ["cel"]],
     ["libro", "libro", "book"],
     ["lapiz", "lápiz", "pencil"],
     ["vaso", "vaso", "glass"],

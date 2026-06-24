@@ -1,7 +1,7 @@
-TOTAL IMAGES NEEDED: 120
+TOTAL IMAGES NEEDED: 123
 
 SEE-GUESS IMAGE MANIFEST
-Drop these files into images/seeguess/ . Square-ish JPGs work best.
+Drop files into images/seeguess/ named by the SPANISH slug (no accents/ñ). Any format: png/jpg/jpeg/webp/avif (avif auto-converts).
 The English gloss is just so you know what to picture; it is never shown to the learner.
 
 ==== Level 1 — Single words ====
@@ -15,7 +15,7 @@ gallina.jpg                = hen  [say: gallina]
 pato.jpg                   = duck  [say: pato]
 cerdo.jpg                  = pig  [say: cerdo]
 pez.jpg                    = fish  [say: pez]
-pajaro.jpg                 = bird  [say: pájaro]
+ave.jpg                    = bird  [say: ave]
 conejo.jpg                 = rabbit  [say: conejo]
 raton.jpg                  = mouse  [say: ratón]
 tortuga.jpg                = turtle  [say: tortuga]
@@ -27,6 +27,8 @@ leon.jpg                   = lion  [say: león]
 elefante.jpg               = elephant  [say: elefante]
 mono.jpg                   = monkey  [say: mono]
 serpiente.jpg              = snake  [say: serpiente]
+murcielago.jpg             = bat  [say: murciélago]
+ardilla.jpg                = squirrel  [say: ardilla]
 
 -- Comida (sg-1-2) --
 manzana.jpg                = apple  [say: manzana]
@@ -60,7 +62,8 @@ cama.jpg                   = bed  [say: cama]
 lampara.jpg                = lamp  [say: lámpara]
 reloj.jpg                  = clock  [say: reloj]
 llave.jpg                  = key  [say: llave]
-telefono.jpg               = phone  [say: teléfono]
+telefono.jpg               = landline phone  [say: teléfono]
+celular.jpg                = cell phone / mobile  [say: celular]
 libro.jpg                  = book  [say: libro]
 lapiz.jpg                  = pencil  [say: lápiz]
 vaso.jpg                   = glass  [say: vaso]
