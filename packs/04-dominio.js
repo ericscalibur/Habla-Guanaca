@@ -56,11 +56,11 @@
         { id: "L31-01", promptEn: "I miss you", targetEs: "Me hacés falta", standardEs: "Me haces falta", pronunciation: "meh ah-SEHS FAHL-tah" },
       ],
       newItems: [
+        { id: "L32-05", promptEn: "to count (numbers)", targetEs: "contar", pronunciation: "kohn-TAHR", culturalNote: "Start with the literal meaning — the same verb also means to tell a story; context tells them apart" },
         { id: "L32-01", promptEn: "What's up? / What's new?", targetEs: "¿Qué me contás?", standardEs: "¿Qué me cuentas?", pronunciation: "keh meh kohn-TAHS", culturalNote: "Literally 'what do you tell me?' — a super common voseo greeting" },
         { id: "L32-02", promptEn: "Let me tell you that...", targetEs: "Te cuento que...", pronunciation: "teh KWEHN-toh keh", culturalNote: "Opener for news or a story" },
         { id: "L32-03", promptEn: "Count on me", targetEs: "Contá conmigo", standardEs: "Cuenta conmigo", pronunciation: "kohn-TAH kohn-MEE-goh" },
         { id: "L32-04", promptEn: "I can count on you", targetEs: "Puedo contar con vos", standardEs: "Puedo contar contigo", pronunciation: "PWEH-doh kohn-TAHR kohn vohs" },
-        { id: "L32-05", promptEn: "to count (numbers)", targetEs: "contar", pronunciation: "kohn-TAHR", culturalNote: "Same verb that counts numbers also tells stories — context tells them apart" },
         { id: "L32-06", promptEn: "I was told that...", targetEs: "Me contaron que...", pronunciation: "meh kohn-TAH-rohn keh", culturalNote: "Cousin of 'me dijeron que' — secondhand news" },
         { id: "L32-07", promptEn: "Did I tell you that...?", targetEs: "¿Te conté que...?", pronunciation: "teh kohn-TEH keh" },
         { id: "L32-08", promptEn: "Tell me everything", targetEs: "Contame todo", standardEs: "Cuéntame todo", pronunciation: "kohn-TAH-meh TOH-doh", culturalNote: "Vos command: contame. Usted: cuénteme" },
