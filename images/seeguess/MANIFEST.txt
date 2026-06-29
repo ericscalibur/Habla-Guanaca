@@ -1,4 +1,4 @@
-TOTAL IMAGES NEEDED: 123
+TOTAL IMAGES NEEDED: 143
 
 SEE-GUESS IMAGE MANIFEST
 Drop files into images/seeguess/ named by the SPANISH slug (no accents/ñ). Any format: png/jpg/jpeg/webp/avif (avif auto-converts).
@@ -142,3 +142,26 @@ reloj-dorado.jpg           = gold watch  [say: reloj dorado]
 lentes-negros.jpg          = black glasses  [say: lentes negros]
 camisa-blanca.jpg          = white shirt  [say: camisa blanca]
 short-azul.jpg             = blue shorts  [say: short azul]
+
+-- Números y cosas (sg-2-2) --
+NOTE: reuses Level 1 vocab but needs NEW images showing the quantity (e.g. two strawberries, not one).
+dos-fresas.jpg             = two strawberries  [say: dos fresas]
+tres-manzanas.jpg          = three apples  [say: tres manzanas]
+cuatro-huevos.jpg          = four eggs  [say: cuatro huevos]
+cinco-bananos.jpg          = five bananas  [say: cinco bananos]
+seis-uvas.jpg              = six grapes  [say: seis uvas]
+siete-naranjas.jpg         = seven oranges  [say: siete naranjas]
+ocho-limones.jpg           = eight limes  [say: ocho limones]
+nueve-frijoles.jpg         = nine beans  [say: nueve frijoles]
+diez-tortillas.jpg         = ten tortillas  [say: diez tortillas]
+dos-gatos.jpg              = two cats  [say: dos gatos]
+tres-perros.jpg            = three dogs  [say: tres perros]
+cuatro-patos.jpg           = four ducks  [say: cuatro patos]
+cinco-vacas.jpg            = five cows  [say: cinco vacas]
+seis-conejos.jpg           = six rabbits  [say: seis conejos]
+dos-libros.jpg             = two books  [say: dos libros]
+tres-sillas.jpg            = three chairs  [say: tres sillas]
+cuatro-vasos.jpg           = four glasses  [say: cuatro vasos]
+cinco-platos.jpg           = five plates  [say: cinco platos]
+seis-flores.jpg            = six flowers  [say: seis flores]
+siete-estrellas.jpg        = seven stars  [say: siete estrellas]
