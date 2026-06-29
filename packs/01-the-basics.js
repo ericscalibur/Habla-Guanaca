@@ -131,7 +131,7 @@
         // Watermelon — one half at a time, then joined together
         { id: "L02C-03", promptEn: "The watermelon is green outside", targetEs: "La sandía es verde por fuera", pronunciation: "lah sahn-DEE-ah ehs VEHR-deh pohr FWEH-rah", maxReviews: 2, culturalNote: "'Por fuera' = on the outside" },
         { id: "L02C-04", promptEn: "The watermelon is red inside", targetEs: "La sandía es roja por dentro", pronunciation: "lah sahn-DEE-ah ehs ROH-hah pohr DEHN-troh", maxReviews: 2, culturalNote: "'Por dentro' = on the inside. Roja agrees with sandía (feminine)" },
-        { id: "L02C-05", promptEn: "Green outside and red inside", targetEs: "La sandía es verde por fuera y roja por dentro", pronunciation: "lah sahn-DEE-ah ehs VEHR-deh pohr FWEH-rah ee ROH-hah pohr DEHN-troh", maxReviews: 2, culturalNote: "Now both halves joined with 'y' (and)" },
+        { id: "L02C-05", promptEn: "The watermelon is green outside and red inside", targetEs: "La sandía es verde por fuera y roja por dentro", pronunciation: "lah sahn-DEE-ah ehs VEHR-deh pohr FWEH-rah ee ROH-hah pohr DEHN-troh", maxReviews: 2, culturalNote: "Now both halves joined with 'y' (and)" },
         // Coconut — same pattern, reusing brown & white from the last lesson
         { id: "L02C-06", promptEn: "The coconut is brown outside", targetEs: "El coco es marrón por fuera", pronunciation: "ehl KOH-koh ehs mah-RROHN pohr FWEH-rah", maxReviews: 2 },
         { id: "L02C-07", promptEn: "The coconut is white inside", targetEs: "El coco es blanco por dentro", pronunciation: "ehl KOH-koh ehs BLAHN-koh pohr DEHN-troh", maxReviews: 2, culturalNote: "Coco is masculine, so blanco (not blanca)" },
