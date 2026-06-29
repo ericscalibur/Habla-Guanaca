@@ -235,6 +235,19 @@ function sgEventMatches(event, acceptNorm) {
   return false;
 }
 
+// Build the accepted-answer list for a regular lesson item (for mic listening
+// during the countdown). Splits slash-alternatives like "esa / ese" and folds
+// in the textbook form so locals saying either are accepted.
+function lessonAcceptNorms(item) {
+  if (!item) return [];
+  const raw = [];
+  const add = s => { if (s) String(s).split("/").forEach(p => raw.push(p)); };
+  add(item.targetEs);
+  add(item.standardEs);
+  if (Array.isArray(item.accept)) item.accept.forEach(a => raw.push(a));
+  return raw.map(sgNormalize).filter(Boolean);
+}
+
 // Short success chime via WebAudio (no asset needed).
 let _sgAudioCtx = null;
 function sgChime() {
@@ -257,7 +270,7 @@ function sgChime() {
 // ============================================================
 // SETTINGS MODAL
 // ============================================================
-function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice,onClose}) {
+function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,micListen,setMicListen,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice,onClose}) {
   const preview=(voice,text)=>speakWithVoice(text,voice,0.85);
   return (
     <div className="fixed inset-0 bg-black/70 flex items-end sm:items-center justify-center z-50 p-4" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
@@ -303,7 +316,7 @@ function SettingsModal({pauseDuration,setPauseDuration,speechRate,setSpeechRate,
             <div className="flex justify-between text-xs text-gray-600 mt-0.5"><span>Slow</span><span>Natural</span></div>
           </div>
           <div className="space-y-3">
-            {[["Pronunciation guide",showPronunciation,setShowPronunciation],["Auto-advance",autoAdvance,setAutoAdvance],["Text-to-speech",ttsEnabled,setTtsEnabled]].map(([label,checked,onChange])=>(
+            {[["Pronunciation guide",showPronunciation,setShowPronunciation],["Auto-advance",autoAdvance,setAutoAdvance],["Text-to-speech",ttsEnabled,setTtsEnabled],...(SEEGUESS_SUPPORTED?[["Listen for your answer 🎤",micListen,setMicListen]]:[])].map(([label,checked,onChange])=>(
               <div key={label} className="flex items-center justify-between">
                 <span className="text-sm text-gray-300">{label}</span>
                 <button onClick={()=>onChange(!checked)} className={`w-10 h-5 rounded-full transition-colors relative ${checked?"bg-blue-600":"bg-gray-700"}`}>
@@ -590,6 +603,9 @@ function HablaGuanaca() {
   const [showPronunciation,setShowPronunciation]=useState(true);
   const [autoAdvance,setAutoAdvance]=useState(true);
   const [ttsEnabled,setTtsEnabled]=useState(true);
+  const [micListen,setMicListen]=useState(true);
+  const [micBlocked,setMicBlocked]=useState(false);
+  const [heardEs,setHeardEs]=useState("");
   const [spanishVoices,setSpanishVoices]=useState([]);
   const [englishVoices,setEnglishVoices]=useState([]);
   const [selectedSpanishVoice,setSelectedSpanishVoice]=useState(null);
@@ -655,6 +671,39 @@ function HablaGuanaca() {
     if(phase==="reveal"){const item=sequence[currentIdx];if(item)speakEs(item.targetEs,item.id);}
   },[phase]);
 
+  // Listen for the spoken Spanish answer during the countdown. A correct
+  // utterance abandons the timer and jumps straight to the reveal — same end
+  // state as letting the clock run out, just sooner. Best-effort: if the
+  // browser lacks the Web Speech API or the mic is blocked, the countdown
+  // behaves exactly as before.
+  useEffect(()=>{
+    if(phase!=="anticipate")return;
+    if(!micListen||!SEEGUESS_SUPPORTED||micBlocked)return;
+    const item=sequence[currentIdx];
+    const acceptNorm=lessonAcceptNorms(item);
+    if(acceptNorm.length===0)return;
+    setHeardEs("");
+    const recogLang=(selectedSpanishVoice&&/^es-/.test(selectedSpanishVoice.lang))?selectedSpanishVoice.lang:"es-US";
+    let stopped=false,matched=false;
+    const recog=new SpeechRecognitionImpl();
+    recog.lang=recogLang;recog.continuous=true;recog.interimResults=true;recog.maxAlternatives=6;
+    recog.onresult=(e)=>{
+      const last=e.results[e.results.length-1];
+      if(last&&last[0]&&isMountedRef.current)setHeardEs(last[0].transcript);
+      if(sgEventMatches(e,acceptNorm)){
+        matched=true;stopped=true;
+        try{recog.abort();}catch(err){}
+        if(timerRef.current)clearInterval(timerRef.current);
+        sgChime();
+        if(isMountedRef.current){setTimer(0);setPhase("reveal");}
+      }
+    };
+    recog.onerror=(e)=>{ if(e.error==="not-allowed"||e.error==="service-not-allowed"){stopped=true;if(isMountedRef.current)setMicBlocked(true);} };
+    recog.onend=()=>{ if(!stopped&&!matched){try{recog.start();}catch(err){}} };
+    try{recog.start();}catch(err){}
+    return()=>{stopped=true;try{recog.abort();}catch(err){}};
+  },[phase,currentIdx,sequence,micListen,micBlocked,selectedSpanishVoice]);
+
   const nextItem=useCallback(()=>{
     if(window.speechSynthesis)window.speechSynthesis.cancel();
     if(currentIdx+1>=sequence.length){setCompletedLessons(p=>{const n={...p,[selectedLesson.id]:true};try{localStorage.setItem("habla-completed",JSON.stringify(n))}catch(e){}return n;});setScreen("complete");}
@@ -678,7 +727,7 @@ function HablaGuanaca() {
   const currentItem=sequence[currentIdx]||null;
   const progress=sequence.length>0?((currentIdx+1)/sequence.length)*100:0;
 
-  const settingsProps={pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice};
+  const settingsProps={pauseDuration,setPauseDuration,speechRate,setSpeechRate,showPronunciation,setShowPronunciation,autoAdvance,setAutoAdvance,ttsEnabled,setTtsEnabled,micListen,setMicListen,spanishVoices,englishVoices,selectedSpanishVoice,setSelectedSpanishVoice,selectedEnglishVoice,setSelectedEnglishVoice};
   const sgRecogLang=(selectedSpanishVoice&&/^es-/.test(selectedSpanishVoice.lang))?selectedSpanishVoice.lang:"es-US";
 
   // SEE-GUESS LESSON PICKER
@@ -803,7 +852,16 @@ function HablaGuanaca() {
               </svg>
               <span className={"absolute inset-0 flex items-center justify-center text-2xl font-bold "+(isHolding?"text-amber-400":"text-blue-400")}>{timer}</span>
             </div>
-            <p className={"text-[11px] mb-4 h-4 select-none pointer-events-none transition-colors "+(isHolding?"text-amber-400":"text-gray-600")}>{isHolding?"⏸ Paused — release to resume":"Tap & hold anywhere to pause"}</p>
+            <p className={"text-[11px] mb-2 h-4 select-none pointer-events-none transition-colors "+(isHolding?"text-amber-400":"text-gray-600")}>{isHolding?"⏸ Paused — release to resume":"Tap & hold anywhere to pause"}</p>
+            {micListen&&SEEGUESS_SUPPORTED&&!micBlocked&&(
+              <div className="mb-3 select-none pointer-events-none">
+                <div className="flex items-center justify-center gap-1.5 text-[11px] text-rose-300/80">
+                  <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span></span>
+                  <span>Listening — say it to skip ahead</span>
+                </div>
+                <p className="text-gray-600 text-[11px] h-4 italic mt-1">{heardEs?"“"+heardEs+"”":" "}</p>
+              </div>
+            )}
             <button onClick={skipToReveal} onPointerDown={e=>e.stopPropagation()} className="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm text-gray-400 transition-colors flex items-center gap-2 mx-auto"><IconSkipFwd size={14}/> Show answer</button>
           </div>
         )}

@@ -11,10 +11,16 @@ Most Spanish apps teach you standard Mexican or Castilian Spanish. Land in El Sa
 Each lesson follows an audio-first, spaced repetition approach:
 
 1. **Prompt** — You see and hear an English phrase
-2. **Anticipate** — A timed pause where you think (or say) the answer aloud
+2. **Anticipate** — A timed pause where you think (or say) the answer aloud. If you say it correctly, the app hears you and jumps straight to the answer — no need to wait out the clock
 3. **Reveal** — The Salvadoran Spanish answer appears with pronunciation and cultural notes
 
 New vocabulary is introduced inside realistic scenarios — ordering pupusas at a market, asking for directions, meeting someone new — and reviewed at expanding intervals throughout the lesson to lock it into memory.
+
+### Say it out loud 🎤
+
+During the countdown, the app listens through your microphone (via the Web Speech API) and matches what you say against the Salvadoran answer — accent- and punctuation-insensitive, with textbook synonyms accepted too. Nail the pronunciation and it skips ahead to the reveal early. It's a best-effort bonus: in a browser without speech support, or if you decline the mic, the countdown just runs as normal. Toggle it any time under **Settings → "Listen for your answer."**
+
+There's also a dedicated **See & Say** mode (from the home screen): see a picture, say the word, and the app advances when it hears you.
 
 ## Lessons
 
@@ -28,15 +34,17 @@ New vocabulary is introduced inside realistic scenarios — ordering pupusas at 
 
 ## Quick start
 
-No build step. Just open `index.html` in a browser.
+No build step — serve the folder over `http://localhost` so the microphone works (browsers block mic access on `file://`):
 
 ```bash
-# serve locally
+# serve locally (localhost counts as a secure context, so the mic works)
 npx serve .
 
-# or just open the file directly
-open index.html
+# or with Python
+python3 -m http.server 8000
 ```
+
+Then open the printed URL (e.g. `http://localhost:3000`). Opening `index.html` directly via `file://` works for everything *except* the mic features.
 
 ## Voice settings
 
