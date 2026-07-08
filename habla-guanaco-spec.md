@@ -1,4 +1,4 @@
-# Habla Guanaca — Architecture Spec
+# Habla Guanaco — Architecture Spec
 ### A Pimsleur-Style Spanish Learning App (Salvadoran Dialect)
 **Version:** 0.1 MVP — May 2026
 
@@ -6,9 +6,9 @@
 
 ## 1. Product Vision
 
-Habla Guanaca is an audio-first, spaced-repetition language learning app that teaches conversational Salvadoran Spanish ("caliche") using the Pimsleur method. It runs as a self-contained React artifact (single `.jsx` file) with no backend, designed for rapid prototyping and iteration inside Claude's artifact renderer.
+Habla Guanaco is an audio-first, spaced-repetition language learning app that teaches conversational Salvadoran Spanish ("caliche") using the Pimsleur method. It runs as a self-contained React artifact (single `.jsx` file) with no backend, designed for rapid prototyping and iteration inside Claude's artifact renderer.
 
-The name "Guanaca" is the colloquial term Salvadorans use for themselves — it signals immediately that this isn't textbook Spanish.
+The name "Guanaco" is the colloquial term Salvadorans use for themselves — it signals immediately that this isn't textbook Spanish.
 
 ---
 

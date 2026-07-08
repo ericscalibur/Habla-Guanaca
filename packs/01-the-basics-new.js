@@ -1,5 +1,5 @@
 // =============================================================
-// Habla Guanaca — Pack 01: The Basics (Lessons 6-10)
+// Habla Guanaco — Pack 01: The Basics (Lessons 6-10)
 // These get merged into the main pack file after audio generation
 // =============================================================
 

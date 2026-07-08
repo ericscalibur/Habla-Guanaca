@@ -1,4 +1,4 @@
-TOTAL IMAGES NEEDED: 143
+TOTAL IMAGES NEEDED: 148
 
 SEE-GUESS IMAGE MANIFEST
 Drop files into images/seeguess/ named by the SPANISH slug (no accents/ñ). Any format: png/jpg/jpeg/webp/avif (avif auto-converts).
@@ -7,13 +7,13 @@ The English gloss is just so you know what to picture; it is never shown to the 
 ==== Level 1 — Single words ====
 
 -- Animales (sg-1-1) --
-perro.jpg                  = dog  [say: perro]
+perro.jpg                  = dog  [say: chucho]
 gato.jpg                   = cat  [say: gato]
 vaca.jpg                   = cow  [say: vaca]
 caballo.jpg                = horse  [say: caballo]
 gallina.jpg                = hen  [say: gallina]
 pato.jpg                   = duck  [say: pato]
-cerdo.jpg                  = pig  [say: cerdo]
+cerdo.jpg                  = pig  [say: tunco]
 pez.jpg                    = fish  [say: pez]
 ave.jpg                    = bird  [say: ave]
 conejo.jpg                 = rabbit  [say: conejo]
@@ -29,6 +29,11 @@ mono.jpg                   = monkey  [say: mono]
 serpiente.jpg              = snake  [say: serpiente]
 murcielago.jpg             = bat  [say: murciélago]
 ardilla.jpg                = squirrel  [say: ardilla]
+tacuazin.jpg               = opossum  [say: tacuazín]
+mazacuata.jpg              = boa constrictor  [say: mazacuata]
+tucan.jpg                  = toucan  [say: tucán]
+torogoz.jpg                = torogoz (national bird)  [say: torogoz]
+garrobo.jpg                = black spiny-tailed iguana  [say: garrobo]
 
 -- Comida (sg-1-2) --
 manzana.jpg                = apple  [say: manzana]
@@ -155,7 +160,7 @@ ocho-limones.jpg           = eight limes  [say: ocho limones]
 nueve-frijoles.jpg         = nine beans  [say: nueve frijoles]
 diez-tortillas.jpg         = ten tortillas  [say: diez tortillas]
 dos-gatos.jpg              = two cats  [say: dos gatos]
-tres-perros.jpg            = three dogs  [say: tres perros]
+tres-chuchos.jpg           = three dogs  [say: tres chuchos]
 cuatro-patos.jpg           = four ducks  [say: cuatro patos]
 cinco-vacas.jpg            = five cows  [say: cinco vacas]
 seis-conejos.jpg           = six rabbits  [say: seis conejos]

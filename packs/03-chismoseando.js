@@ -1,5 +1,5 @@
 // =============================================================
-// Habla Guanaca — Pack 03: Chismoseando
+// Habla Guanaco — Pack 03: Chismoseando
 // 10 lessons of gossip, insults, trash talk & shade in Salvadoran Spanish
 // =============================================================
 (function() {

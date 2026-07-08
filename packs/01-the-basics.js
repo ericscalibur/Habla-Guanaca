@@ -1,5 +1,5 @@
 // =============================================================
-// Habla Guanaca — Pack 01: The Basics
+// Habla Guanaco — Pack 01: The Basics
 // 10 lessons: greetings, food, directions, family, shopping & more
 // =============================================================
 (function() {

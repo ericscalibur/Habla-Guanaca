@@ -32,13 +32,13 @@
 
   // ---------- LEVEL 1 — single words ----------
   const L1L1 = [ // Animales
-    ["perro", "perro", "dog"],
+    ["perro", "chucho", "dog", ["perro"]],
     ["gato", "gato", "cat"],
     ["vaca", "vaca", "cow"],
     ["caballo", "caballo", "horse"],
     ["gallina", "gallina", "hen"],
     ["pato", "pato", "duck"],
-    ["cerdo", "cerdo", "pig", ["chancho", "cuche", "marrano"]],
+    ["cerdo", "tunco", "pig", ["cerdo", "chancho", "cuche", "marrano"]],
     ["pez", "pez", "fish"],
     ["ave", "ave", "bird", ["pájaro"]],
     ["conejo", "conejo", "rabbit"],
@@ -54,6 +54,11 @@
     ["serpiente", "serpiente", "snake", ["culebra", "vibora"]],
     ["murcielago", "murciélago", "bat"],
     ["ardilla", "ardilla", "squirrel"],
+    ["tacuazin", "tacuazín", "opossum", ["tacuacín"]],
+    ["mazacuata", "mazacuata", "boa constrictor", ["masacuata"]],
+    ["tucan", "tucán", "toucan"],
+    ["torogoz", "torogoz", "torogoz (motmot, national bird of SV)"],
+    ["garrobo", "garrobo", "black spiny-tailed iguana"],
   ];
 
   const L1L2 = [ // Comida y bebida

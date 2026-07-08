@@ -1,5 +1,5 @@
 // =============================================================
-// Habla Guanaca — Pack 04: A otro nivel (Mastery)
+// Habla Guanaco — Pack 04: A otro nivel (Mastery)
 // 10 advanced lessons: versatile verbs, tricky grammar & storytelling
 // L31–L40. No embedded audio — uses the (de-lisped) TTS fallback.
 // =============================================================

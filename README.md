@@ -1,4 +1,4 @@
-# Habla Guanaca 🇸🇻
+# Habla Guanaco 🇸🇻
 
 A language learning app for **Salvadoran Spanish** — the kind people actually speak on the streets of San Salvador, not the textbook version.
 

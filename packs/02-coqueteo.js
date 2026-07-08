@@ -1,5 +1,5 @@
 // =============================================================
-// Habla Guanaca — Pack 02: Coqueteo
+// Habla Guanaco — Pack 02: Coqueteo
 // 10 lessons of flirting, romance & spicy talk in Salvadoran Spanish
 // =============================================================
 (function() {
@@ -157,9 +157,9 @@
       dialogue: {
         context: "When words get more... direct.",
         lines: [
-          { speaker: "A", textEs: "Estás como querés.", textEn: "You look amazing." },
+          { speaker: "A", textEs: "Te ves espectacular.", textEn: "You look spectacular." },
           { speaker: "B", textEs: "Vos tampoco estás mal.", textEn: "You're not bad yourself." },
-          { speaker: "A", textEs: "Te voy a comer a besos.", textEn: "I'm going to cover you in kisses." },
+          { speaker: "A", textEs: "Te voy a comer a besos.", textEn: "I'm going to eat you up with kisses." },
           { speaker: "B", textEs: "Pues qué esperás.", textEn: "Well what are you waiting for?" },
         ],
       },
@@ -168,11 +168,11 @@
         { id: "L15-07", promptEn: "Turn off the light", targetEs: "Apagá la luz", standardEs: "Apaga la luz", pronunciation: "ah-pah-GAH lah loos" },
       ],
       newItems: [
-        { id: "L16-01", promptEn: "You look amazing (SV slang)", targetEs: "Estás como querés", pronunciation: "ehs-TAHS KOH-moh keh-REHS", culturalNote: "Literally 'you are however you want' — means you look incredible" },
-        { id: "L16-02", promptEn: "I'm going to cover you with kisses", targetEs: "Te voy a comer a besos", pronunciation: "teh voy ah koh-MEHR ah BEH-sohs", culturalNote: "'Comer a besos' = cover with kisses. Intense but common." },
+        { id: "L16-01", promptEn: "You look spectacular", targetEs: "Te ves espectacular", pronunciation: "teh vehs ehs-pehk-tah-koo-LAHR" },
+        { id: "L16-02", promptEn: "I'm going to eat you up with kisses", targetEs: "Te voy a comer a besos", pronunciation: "teh voy ah koh-MEHR ah BEH-sohs", culturalNote: "Literally 'to eat you with kisses' — to smother someone in kisses. Intense but common." },
         { id: "L16-03", promptEn: "I can't resist you", targetEs: "No me puedo resistir", pronunciation: "noh meh PWEH-doh rreh-sees-TEER" },
         { id: "L16-04", promptEn: "You're driving me crazy (desire)", targetEs: "Me tenés loco/a", standardEs: "Me tienes loco/a", pronunciation: "meh teh-NEHS LOH-koh" },
-        { id: "L16-05", promptEn: "harder / more intensely", targetEs: "más fuerte", pronunciation: "mahs FWEHR-teh" },
+        { id: "L16-05", promptEn: "harder / more intensely", targetEs: "más duro", pronunciation: "mahs DOO-roh" },
         { id: "L16-06", promptEn: "yes, like that", targetEs: "sí, así", pronunciation: "see ah-SEE" },
         { id: "L16-07", promptEn: "What are you waiting for?", targetEs: "¿Qué esperás?", standardEs: "¿Qué esperas?", pronunciation: "keh ehs-peh-RAHS" },
         { id: "L16-08", promptEn: "right there", targetEs: "ahí mero", pronunciation: "ah-EE MEH-roh", culturalNote: "'Mero' is a Salvadoran intensifier — 'ahí mero' = right exactly there" },
@@ -193,7 +193,7 @@
         ],
       },
       priorReview: [
-        { id: "L16-01", promptEn: "You look amazing (SV slang)", targetEs: "Estás como querés", pronunciation: "ehs-TAHS KOH-moh keh-REHS", culturalNote: "Literally 'you are however you want' — means you look incredible" },
+        { id: "L16-01", promptEn: "You look spectacular", targetEs: "Te ves espectacular", pronunciation: "teh vehs ehs-pehk-tah-koo-LAHR" },
         { id: "L16-08", promptEn: "right there", targetEs: "ahí mero", pronunciation: "ah-EE MEH-roh", culturalNote: "'Mero' is a Salvadoran intensifier — 'ahí mero' = right exactly there" },
       ],
       newItems: [
