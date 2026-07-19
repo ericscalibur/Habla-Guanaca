@@ -296,7 +296,7 @@
         { id: "L39-09", promptEn: "I have a cold", targetEs: "Estoy resfriado/a", pronunciation: "ehs-TOY rrehs-free-AH-doh", culturalNote: "In SV you'll also hear 'estoy agripado/a'" },
         { id: "L39-10", promptEn: "⚠️ I'm congested / have a cold (NOT constipated)", targetEs: "Estoy constipado", pronunciation: "ehs-TOY kohns-tee-PAH-doh", culturalNote: "It means a head cold — not the bowel kind" },
         { id: "L39-11", promptEn: "the potato", targetEs: "la papa", pronunciation: "lah PAH-pah", culturalNote: "Lowercase, feminine" },
-        { id: "L39-12", promptEn: "dad", targetEs: "el papá", pronunciation: "ehl pah-PAH", culturalNote: "Stress the last syllable. 'La papa' (potato), 'el papá' (dad), 'el Papa' (the Pope) — accent and article decide" },
+        { id: "L39-12", promptEn: "The dad", targetEs: "el papá", pronunciation: "ehl pah-PAH", culturalNote: "Stress the last syllable. 'La papa' (potato), 'el papá' (dad), 'el Papa' (the Pope) — accent and article decide" },
         { id: "L39-13", promptEn: "it matters to me", targetEs: "Me importa", pronunciation: "meh eem-POHR-tah" },
         { id: "L39-14", promptEn: "⚠️ I'm aroused (NOT just 'excited')", targetEs: "Estoy excitado", pronunciation: "ehs-TOY ehk-see-TAH-doh", culturalNote: "For plain 'excited,' say 'estoy emocionado/a'" },
       ],
